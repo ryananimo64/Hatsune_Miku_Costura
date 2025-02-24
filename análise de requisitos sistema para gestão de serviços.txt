@@ -1,0 +1,16 @@
+1. Cadastro de Clientes
+Nome completo
+Contato (telefone, e-mail)
+Endereço para entrega (se necessário)
+Histórico de serviços realizados
+2. Cadastro de Serviços
+Tipo de serviço (ex: conserto de roupas, ajustes, peças personalizadas, etc.)
+Descrição detalhada do serviço
+Materiais necessários (tecidos, acessórios, etc.)
+Preço base para cada tipo de serviço
+Tempo estimado de execução
+
+3. Relatórios:
+- Clientes
+- OS abertas
+- OS concluídas
