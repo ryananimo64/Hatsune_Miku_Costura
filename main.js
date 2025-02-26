@@ -8,8 +8,8 @@ const createWindow = () => {
     // a linha abaixo define o tema (claro ou escuro)
     nativeTheme.themeSource = 'light' //(dark ou light)
     win = new BrowserWindow({
-        width: 800,
-        height: 600,
+        width: 900,
+        height: 700,
         //autoHideMenuBar: true,
         //minimizable: false,
         resizable: false
@@ -87,7 +87,19 @@ const template = [
         ]
     },
     {
-        label: 'Relatórios'
+        label: 'Relatórios',
+        submenu: [
+            {
+                label: 'Clientes'
+              },
+              {
+                label: 'OS abertas'
+              },
+              {
+                label: 'OS concluídas'
+              }
+        
+    ]
     },    
     {
         label: 'Ferramentas',
