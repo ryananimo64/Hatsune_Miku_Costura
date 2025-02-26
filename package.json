@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ryananimo64/assisti_TI.git"
+    "url": "git+https://github.com/ryananimo64/Hatsune_Miku_Costura.git"
   },
   "author": "Ryan Rodrigues Andrade",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/ryananimo64/assisti_TI/issues"
+    "url": "https://github.com/ryananimo64/Hatsune_Miku_Costura/issues"
   },
-  "homepage": "https://github.com/ryananimo64/assisti_TI#readme",
+  "homepage": "https://github.com/ryananimo64/Hatsune_Miku_Costura#readme",
   "devDependencies": {
     "electron": "^34.2.0"
   }
