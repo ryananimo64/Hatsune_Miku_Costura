@@ -1,6 +1,9 @@
 console.log("Processo principal")
 
-const { app, BrowserWindow, nativeTheme, Menu } = require('electron')
+const { app, BrowserWindow, nativeTheme, Menu, ipcMain } = require('electron')
+
+const path = require('node:path')
+
 
 // Janela principal
 let win
@@ -8,17 +11,28 @@ const createWindow = () => {
     // a linha abaixo define o tema (claro ou escuro)
     nativeTheme.themeSource = 'light' //(dark ou light)
     win = new BrowserWindow({
-        width: 900,
-        height: 700,
+        width: 800,
+        height: 500,
         //autoHideMenuBar: true,
         //minimizable: false,
-        resizable: false
+        resizable: false,
+        //ativação do preload
+        webPreferences: {
+            preload: path.join(__dirname, 'preload.js')
+        }
     })
 
     // menu personalizado
     Menu.setApplicationMenu(Menu.buildFromTemplate(template))
 
     win.loadFile('./src/views/index.html')
+
+    ipcMain.on('client-window', () => {
+        clientwindow()
+    })
+    ipcMain.on('os-window', () => {
+        oswindow()
+    })
 }
 //Fim da janela principal
 
@@ -45,6 +59,42 @@ function aboutWindow(){
     about.loadFile('./src/views/sobre.html')
   }
 
+  let client
+  function clientwindow() {
+      nativeTheme.themeSource = 'light'
+      const main = BrowserWindow.getFocusedWindow()
+      if(main) {
+          client = new BrowserWindow({
+              width: 1010,
+              height: 720,
+              autoHideMenuBar: true,
+              resizable: false,
+              parent: main,
+              modal: true
+            
+          })
+      }
+      client.loadFile('./src/views/cadastro.html')
+  }
+
+
+  let os
+function oswindow() {
+    nativeTheme.themeSource = 'light'
+    const main = BrowserWindow.getFocusedWindow()
+    if(main) {
+        client = new BrowserWindow({
+            width: 1010,
+            height: 720,
+            autoHideMenuBar: true,
+            resizable: false,
+            parent: main,
+            modal: true
+          
+        })
+    }
+    client.loadFile('./src/views/os.html')
+}
 // Iniciar a aplicação
 app.whenReady().then(() => {
     createWindow()
@@ -70,10 +120,12 @@ const template = [
         label: 'Cadastro',
         submenu: [
             {
-                label: 'Clientes'
+                label: 'Clientes',
+                click: () => clientwindow()
             },
             {
-                label: 'OS'
+                label: 'OS',
+                click: () => oswindow()
             },
             {
                 type: 'separator'
