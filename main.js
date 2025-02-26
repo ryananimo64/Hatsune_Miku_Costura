@@ -1,6 +1,7 @@
 console.log("Processo principal")
 
 const { app, BrowserWindow, nativeTheme, Menu, ipcMain } = require('electron')
+const { link } = require('node:fs')
 
 const path = require('node:path')
 
@@ -47,7 +48,7 @@ function aboutWindow(){
       //criar a janela sobre
        about = new BrowserWindow({
         width: 360,
-        height: 220,
+        height: 260,
         autoHideMenuBar: true,
         resizable:false,
         minimizable: false,
@@ -75,6 +76,7 @@ function aboutWindow(){
           })
       }
       client.loadFile('./src/views/cadastro.html')
+      client.center()
   }
 
 
@@ -94,6 +96,7 @@ function oswindow() {
         })
     }
     client.loadFile('./src/views/os.html')
+    client.center()
 }
 // Iniciar a aplicação
 app.whenReady().then(() => {
