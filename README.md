@@ -4,3 +4,6 @@
 desenvolvimento de um sistema desktop para gestão de ordem de serviço de uma atelie de costura focada em cosplay.
 ## Author
 Ryan Rodrigues
+
+
+<div><img src="https://upload.wikimedia.org/wikipedia/pt/c/ce/HatsuneMikuSekai.png"></div>
