@@ -87,7 +87,7 @@ function oswindow() {
     if(main) {
         client = new BrowserWindow({
             width: 1010,
-            height: 720,
+            height: 820,
             autoHideMenuBar: true,
             resizable: false,
             parent: main,
