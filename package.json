@@ -1,0 +1,26 @@
+{
+  "name": "assisti_ti",
+  "version": "1.0.0",
+  "description": "desenvolvimento de um sistema desktop para gestão de ordem de serviço de uma assistencia técnica de computadores e notebooks.",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ryananimo64/Hatsune_Miku_Costura.git"
+  },
+  "author": "Ryan Rodrigues Andrade",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ryananimo64/Hatsune_Miku_Costura/issues"
+  },
+  "homepage": "https://github.com/ryananimo64/Hatsune_Miku_Costura#readme",
+  "devDependencies": {
+    "electron": "^34.2.0"
+  },
+  "dependencies": {
+    "mongoose": "^8.12.2"
+  }
+}
