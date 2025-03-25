@@ -8,6 +8,9 @@ const path = require('node:path')
 //importação dos metodos conectar e desconectar(modulo de conexão)
 const {conectar , desconectar} = require("./database.js")
 
+// Importação do schema Clientes da camada model
+const clientModel = require ('./src/models/Clientes.js')
+
 // Janela principal
 let win
 const createWindow = () => {
@@ -19,6 +22,7 @@ const createWindow = () => {
         //autoHideMenuBar: true,
         //minimizable: false,
         resizable: false,
+        modal: true,
         //ativação do preload
         webPreferences: {
             preload: path.join(__dirname, 'preload.js')
@@ -69,11 +73,14 @@ function aboutWindow(){
       if(main) {
           client = new BrowserWindow({
               width: 1010,
-              height: 720,
+              height: 820,
               autoHideMenuBar: true,
               resizable: false,
               parent: main,
-              modal: true
+              modal: true,
+              webPreferences: {
+                preload: path.join(__dirname, 'preload.js')
+            }
             
           })
       }
@@ -93,7 +100,10 @@ function oswindow() {
             autoHideMenuBar: true,
             resizable: false,
             parent: main,
-            modal: true
+            modal: true,
+            webPreferences: {
+                preload: path.join(__dirname, 'preload.js')
+            }
         })
     }
     client.loadFile('./src/views/os.html')
@@ -214,3 +224,31 @@ const template = [
         ]
     }
 ]
+
+//======================================
+//== CLIENTES CRUD CREATE
+
+// recebimento do objeto que contem
+ipcMain.on('new-client', async (event, client) => {
+    // IMPORTANTE!! teste do passo dois
+    console.log(client)
+    // Cadastrar a estrutura de dados do banco de dados Mongodb
+    //ATENÇÃO !! os atributos deve ser identicos ao modelo de dados clientes.js
+    //
+    try {
+        //cria uma nova estrutura de dados usando classe  modelo
+        const newClient = new clientModel({
+            nomeCliente: client.nameCli,
+            cpfCliente: client.cpfCli,
+            emailCliente: client.emailCli,
+            foneCliente: client.foneCli,
+            enderecoCliente: client.addressCli
+        })
+         //salvar os dados Clientes no banco de dados
+         await newClient.save()
+    } catch (error) {
+        console.log(error)
+    } 
+})
+
+//== FIM - CLIENTES - CRUD CREATE
