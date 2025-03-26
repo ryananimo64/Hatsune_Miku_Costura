@@ -21,28 +21,99 @@
             </div>
                 <hr class="mt-4 border border-secondary border -1">
                 <!--nome-->
-                 <div class="form-group">
+                 <div class="col-md-7">
                      <label for="nome">Nome Completo:</label>
-                     <input type="text" class="form-control" id="inputNameClient" spellcheck="false"  maxlength="30" required>
+                     <input type="text" class="form-control" id="inputNameClient" spellcheck="false"  maxlength="100" required>
                  </div>
-                 <div class="mb-7">
+                 <div class="col-md-5">
                      <label for="cpf">CPF:</label>
                      <input type="text" class="form-control" id="inputCPFClient" spellcheck="false" maxlength="15" required>
                  </div>
-                 <div class="mb-7">
+                 <div class="col-md-5">
                      <label for="email">E-mail:</label>
                      <input type="email" class="form-control" id="inputEmailClient" spellcheck="false" maxlength="30" required>
                  </div>
-                 <div class="mb-7">
+                 <div class="col-md-4">
                      <label for="tele">Telefone:</label>
                      <input type="text" class="form-control" id="inputPhoneClient" spellcheck="false" maxlength="15" required>
                  </div>
-                 <div class="mb-7">
-                     <label for="endereco">Endereço:</label>
-                     <input type="text" class="form-control" id="inputAddressClient" spellcheck="false" maxlength="30" required >
-                 </div>
-                 <div class="mb-7">
-                    <input type="submit" value="Cadastrar">
+                 <div class="col-md-3">
+                    <label for="inputCEPClient" class="form-label">CEP</label>
+                    <input type="text" class="form-control" id="inputCEPClient" spellcheck="false" maxlength="9" required onblur="buscarCEP()">
+                </div>
+    
+                <!-- Logradouro -->
+                <div class="col-md-4">
+                    <label for="inputAddressClient" class="form-label">Logradouro</label>
+                    <input type="text" class="form-control" id="inputAddressClient" spellcheck="false" maxlength="30"
+                        required>
+                </div>
+    
+                <!-- Número -->
+                <div class="col-md-3">
+                    <label for="inputNumberClient" class="form-label">Número</label>
+                    <input type="text" class="form-control" id="inputNumberClient" spellcheck="false" maxlength="5"
+                        required>
+                </div>
+    
+                <!-- Complemento -->
+                <div class="col-md-5">
+                    <label for="inputComplementClient" class="form-label">Complemento</label>
+                    <input type="text" class="form-control" id="inputComplementClient" spellcheck="false" maxlength="12">
+                </div>
+    
+                <!-- Bairro -->
+                <div class="col-md-5">
+                    <label for="inputNeighborhoodClient" class="form-label">Bairro</label>
+                    <input type="text" class="form-control" id="inputNeighborhoodClient" spellcheck="false" maxlength="30"
+                        required>
+                </div>
+    
+                <!-- Cidade -->
+                <div class="col-md-4">
+                    <label for="inputCityClient" class="form-label">Cidade</label>
+                    <input type="text" class="form-control" id="inputCityClient" spellcheck="false" maxlength="30" required>
+                </div>
+    
+                <!-- UF -->
+                <div class="col-md-3">
+                    <label for="inputUFClient" class="form-label">UF</label>
+                    <select class="form-select" id="inputUFClient" name="UF" required>
+                        <option value=""></option>
+                        <option value="AC">AC - Acre</option>
+                        <option value="AL">AL - Alagoas</option>
+                        <option value="AP">AP - Amapá</option>
+                        <option value="AM">AM - Amazonas</option>
+                        <option value="BA">BA - Bahia</option>
+                        <option value="CE">CE - Ceará</option>
+                        <option value="DF">DF - Distrito Federal</option>
+                        <option value="ES">ES - Espírito Santo</option>
+                        <option value="GO">GO - Goiás</option>
+                        <option value="MA">MA - Maranhão</option>
+                        <option value="MT">MT - Mato Grosso</option>
+                        <option value="MS">MS - Mato Grosso do Sul</option>
+                        <option value="MG">MG - Minas Gerais</option>
+                        <option value="PA">PA - Pará</option>
+                        <option value="PB">PB - Paraíba</option>
+                        <option value="PR">PR - Paraná</option>
+                        <option value="PE">PE - Pernambuco</option>
+                        <option value="PI">PI - Piauí</option>
+                        <option value="RJ">RJ - Rio de Janeiro</option>
+                        <option value="RN">RN - Rio Grande do Norte</option>
+                        <option value="RS">RS - Rio Grande do Sul</option>
+                        <option value="RO">RO - Rondônia</option>
+                        <option value="RR">RR - Roraima</option>
+                        <option value="SC">SC - Santa Catarina</option>
+                        <option value="SP">SP - São Paulo</option>
+                        <option value="SE">SE - Sergipe</option>
+                        <option value="TO">TO - Tocantins</option>
+                    </select>
+                 <!-- Botões -->
+                <div class="mt-3">
+                    <button type="submit" class="btn btn-success" id="btnCreate">Adicionar</button>
+                    <button type="submit" class="btn btn-warning" id="btnUpdate">Editar</button>
+                    <button type="button" class="btn btn-danger" id="btnDelete">Excluir</button>
+                    <button type="reset" class="btn" id="btnReset" onclick="resetForm()"></button>
                 </div>
 
             </form>

@@ -15,18 +15,18 @@
 
 <body>
     <div class="container">
-        <form class="mt-2 row g-3">
+        <form class="mt-2 row g-3" id="frmOs">
 
             <!-- OS -->
             <div class="col-md-4">
                 <label class="form-label">Nº OS</label>
-                <input type="text" class="form-control" id="txtOs" disabled>
+                <input type="text" class="form-control" id="inputNumberOs" disabled>
             </div>
 
             <!-- Data -->
             <div class="col-md-3">
                 <label class="form-label">Data</label>
-                <input type="text" class="form-control" id="txtData" disabled>
+                <input type="text" class="form-control" id="inputDataClient" disabled>
             </div>
 
             <!-- Buscar cliente -->
@@ -63,7 +63,7 @@
             <hr class="mt-4 border border-secondary border -1">
 
             <!-- Status -->
-            <div class="col-md-4">
+            <div class="col-md-5">
                 <label class="form-label">Status da OS</label>
                 <select class="form-select" id="osStatus">
                     <option value="">Selecione</option>
@@ -75,23 +75,23 @@
                 </select>
             </div>
            
-            <div class="mb-7">
+            <div class="col-md-7">
                 <label class="form-label">Tecido</label>
-                <input type="text" class="form-control" id="txtOsEquip">
+                <input type="text" class="form-control" id="inputTypeOs">
             </div>
-            <div class="mb-3">
-                <label class="form-label">Problema</label>
-                <input type="text" class="form-control" id="txtOsDef">
+            <div class="col-md-8">
+                <label class="form-label">Descrição</label>
+                <textarea type="text" class="form-control" id="inputProblemOs"></textarea>
             </div>
-            <div class="mb-3">
-                <label class="form-label">Serviço</label>
-                <input type="text" class="form-control" id="txtOsServ">
+            <div class="col-md-4">
+                <label class="form-label">Atendente</label>
+                <input type="text" class="form-control" id="inputServiceOs">
             </div>
            
     
             <div class="d-flex justify-content-center gap-1">
-                <button type="button" class="btn btn-success">Gerar OS</button>
-                <button type="button" class="btn btn-primary">Buscar OS</button>
+                <button type="submit" class="btn btn-success">Gerar OS</button>
+                <button type="submit" class="btn btn-primary">Buscar OS</button>
                 <button type="button" class="btn btn-warning">Editar OS</button>
                 <button type="button" class="btn btn-danger">Excluir OS</button>
                 <button type="button" class="btn btn-secondary">Imprimir OS</button>
@@ -100,6 +100,8 @@
 
     <!-- Bootstrap -->
     <script src="../public/js/bootstrap.min.js"></script>
+    <!--Renderer para a Os-->
+    <script src="./rendererOs.js"></script>
 </body>
 
 </html>

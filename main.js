@@ -10,6 +10,8 @@ const {conectar , desconectar} = require("./database.js")
 
 // Importação do schema Clientes da camada model
 const clientModel = require ('./src/models/Clientes.js')
+const OSModel = require('./src/models/OS.js')
+
 
 // Janela principal
 let win
@@ -73,7 +75,7 @@ function aboutWindow(){
       if(main) {
           client = new BrowserWindow({
               width: 1010,
-              height: 820,
+              height: 720,
               autoHideMenuBar: true,
               resizable: false,
               parent: main,
@@ -96,7 +98,7 @@ function oswindow() {
     if(main) {
         client = new BrowserWindow({
             width: 1010,
-            height: 820,
+            height: 720,
             autoHideMenuBar: true,
             resizable: false,
             parent: main,
@@ -242,10 +244,37 @@ ipcMain.on('new-client', async (event, client) => {
             cpfCliente: client.cpfCli,
             emailCliente: client.emailCli,
             foneCliente: client.foneCli,
-            enderecoCliente: client.addressCli
+            cepCliente: client.cepCli,
+            logradouroCliente: client.logradouroCli,
+            numeroCliente: client.numberCli,
+            complementoCliente: client.complementCli,
+            bairroCliente: client.neighborhoodClient,
+            cidadeCliente: client.cityCli,
         })
          //salvar os dados Clientes no banco de dados
          await newClient.save()
+    } catch (error) {
+        console.log(error)
+    } 
+})
+
+//== FIM - OS - CRUD CREATE
+ipcMain.on('new-os', async (event, OS) => {
+    // IMPORTANTE!! teste do passo dois
+    console.log(OS)
+    // Cadastrar a estrutura de dados do banco de dados Mongodb
+    //ATENÇÃO !! os atributos deve ser identicos ao modelo de dados clientes.js
+    //
+    try {
+        //cria uma nova estrutura de dados usando classe  modelo
+        const newOs = new OSModel({
+            StatusOS: OS.orderStatus,
+            tecidoOS: OS.orderType,
+            problemaOS: OS.orderProblem,
+            costureiraOS: OS.orderService,
+        })
+         //salvar os dados Clientes no banco de dados
+         await newOs.save()
     } catch (error) {
         console.log(error)
     } 

@@ -1,7 +1,32 @@
+// Buscar CEP
+function buscarCEP() {
+    //console.log("teste do evento blur")
+    //armazenar o cep digitado na variável
+    let cep = document.getElementById('inputCEPClient').value
+    //console.log(cep) //teste de recebimento do CEP
+    //"consumir" a API do ViaCEP
+    let urlAPI = `https://viacep.com.br/ws/${cep}/json/`
+    //acessando o web service par abter os dados
+    fetch(urlAPI)
+        .then(response => response.json())
+        .then(dados => {
+            //extração dos dados
+            document.getElementById('inputAddressClient').value = dados.logradouro
+            document.getElementById('inputNeighborhoodClient').value = dados.bairro
+            document.getElementById('inputCityClient').value = dados.localidade
+            document.getElementById('inputUFClient').value = dados.uf
+        })
+        .catch(error => console.log(error))
+}
+
+
+
 const foco = document.getElementById('searchClient')
 
 document.addEventListener('DOMContentLoaded', () => {
     //foco na busca do cliente
+    btnUpdate.disabled = true
+    btnDelete.disabled = true
     foco.focus()
 })
 
@@ -11,8 +36,13 @@ let nameClient = document.getElementById('inputNameClient')
 let cpfClient = document.getElementById('inputCPFClient')
 let emailClient = document.getElementById('inputEmailClient')
 let foneClient = document.getElementById('inputPhoneClient')
-let addressClient = document.getElementById('inputAddressClient')
-
+let cepClient = document.getElementById('inputCEPClient')
+let logradouroClient = document.getElementById('inputAddressClient')
+let numberClient = document.getElementById('inputNumberClient')
+let complementClient = document.getElementById('inputComplementClient')
+let neighborhoodClient = document.getElementById('inputNeighborhoodClient')
+let cityClient = document.getElementById('inputCityClient')
+let ufClient = document.getElementById('inputUFClient')
 
 
 //=====================================================
@@ -31,7 +61,13 @@ frmClient.addEventListener('submit', async (event) => {
         cpfCli: cpfClient.value,
         emailCli: emailClient.value,
         foneCli: foneClient.value,
-        addressCli: addressClient.value,
+        cepCli: cepClient.value,
+        logradouroCli: logradouroClient.value,
+        numberCli: numberClient.value,
+        complementCli: complementClient.value,
+        neighborhoodClient: neighborhoodClient.value,
+        cityCli: cityClient.value,
+        ufClie: ufClient.value
     }
 
      // Enviar ao main o objeto client- (Passo 2: Fluxo)
