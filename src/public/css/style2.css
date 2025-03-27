@@ -20,24 +20,6 @@ label {
     display: block;
     margin-bottom: 5px;
 }
-input[type="text"], input[type="email"], input[type="cpf"],input[type="tel"] , input[type="endereco"],input[type="submit"] {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-}
-input[type="submit"] {
-    background-color: #5780ce;
-    margin-top: 9px;
-    color: white;
-    border: none;
-    cursor: pointer;
-}
-input[type="submit"]:hover {
-    background-color: #5f97ff;
-}
-
 #btnReset {
     width: 48px;
     height: 48px;
@@ -45,4 +27,11 @@ input[type="submit"]:hover {
     border: none;
     cursor: pointer;
     margin-left: 10px;
+}
+
+.button img {
+    margin: 50px 15px 25px 15px;
+    padding: 5px;
+    border: 1px solid #e8e8e8;
+    cursor: pointer;
 }

@@ -1,9 +1,9 @@
-remover link externo no sobre
+V remover link externo no sobre
 -Clientes
-busca a automatica de cep 
-layout do nome,cpf, 
+V busca a automatica de cep 
+V layout do nome,cpf, 
 V botões do editar excluir e limpar campos
-separar campos de endreço
+V separar campos de endreço
 - OS
 adicionar uma lista comun box no tecido
 input para as medidas do cliente(Pesquisar medidas)
