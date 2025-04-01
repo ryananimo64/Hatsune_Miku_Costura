@@ -12,7 +12,11 @@ const OSchema = new Schema({
     statusOS: {type:String},
     tecidoOS: {type:String},
     problemaOS: {type:String},
-    costureiraOS: {type:String}
+    costureiraOS: {type:String},
+    tamanhoOS: {type:String},
+    acessorioOS: {type:String},
+    precoOS: {type:String}
+
 
 },//não versiona os dados armazenado
 {versionKey:false})

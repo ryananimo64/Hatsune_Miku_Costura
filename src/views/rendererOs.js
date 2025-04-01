@@ -1,10 +1,19 @@
-
+const foco = document.getElementById('inputSearchClient');
+ 
+ document.addEventListener('DOMContentLoaded', () => {
+     foco.focus();
+         btnUpdate.disabled = true
+         btnDelete.disabled = true
+ });
 
 let frmOs = document.getElementById('frmOs')
 let osStatus = document.getElementById('osStatus')
 let typeOs = document.getElementById('inputTypeOs')
 let problemOS = document.getElementById('inputProblemOs')
 let serviceOS = document.getElementById('inputServiceOs')
+let sizeOS = document.getElementById('inputSizeOs')
+let acessoriOS = document.getElementById('inputAcessoriOs')
+let priceOS = document.getElementById('inputPriceOs')
 
 
 
@@ -24,7 +33,10 @@ frmOs.addEventListener('submit', async (event) => {
         orderStatus: osStatus.value,
         orderType: typeOs.value,
         orderProblem: problemOS.value,
-        orderService: serviceOS.value
+        orderService: serviceOS.value,
+        orderSize: sizeOS.value,
+        orderacessori: acessoriOS.value,
+        orderPrice: priceOS.value
         }
 
      // Enviar ao main o objeto client- (Passo 2: Fluxo)

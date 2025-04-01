@@ -5,7 +5,7 @@ V layout do nome,cpf,
 V botões do editar excluir e limpar campos
 V separar campos de endreço
 - OS
-adicionar uma lista comun box no tecido
-input para as medidas do cliente(Pesquisar medidas)
-Preço da fantasia
-input para acessorios(Pesquisar para )
+v adicionar uma lista comun box no tecido
+v input para as medidas do cliente(Pesquisar medidas)
+V Preço da fantasia
+V input para acessorios(Pesquisar para )

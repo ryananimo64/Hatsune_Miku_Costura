@@ -63,7 +63,7 @@
             <hr class="mt-4 border border-secondary border -1">
 
             <!-- Status -->
-            <div class="col-md-5">
+            <div class="col-md-4">
                 <label class="form-label">Status da OS</label>
                 <select class="form-select" id="osStatus">
                     <option value="">Selecione</option>
@@ -75,15 +75,44 @@
                 </select>
             </div>
            
-            <div class="col-md-7">
+            <div class="col-md-4">
                 <label class="form-label">Tecido</label>
-                <input type="text" class="form-control" id="inputTypeOs">
+                <select type="text" class="form-select" id="inputTypeOs">
+                    <option value="">Selecione</option>
+                    <option>Algodão</option>
+                    <option>lã</option>
+                    <option>Seda</option>
+                    <option>Poliester</option>
+                    <option>Viscose</option>
+                    <option>TNT</option>
+                    <option>Nylon</option>
+                </select>    
             </div>
-            <div class="col-md-8">
+            <div class="col-md-4">
+                <label class="form-label">Tamanho</label>
+                <select type="text" class="form-select" id="inputSizeOs">
+                    <option value="">Selecione</option>
+                    <option>PP</option>
+                    <option>P</option>
+                    <option>M</option>
+                    <option>G</option>
+                    <option>GG</option>
+                    <option>XG</option>
+                    </select>    
+            </div>
+            <div class="col-md-6">
                 <label class="form-label">Descrição</label>
                 <textarea type="text" class="form-control" id="inputProblemOs"></textarea>
             </div>
+            <div class="col-md-6">
+                <label class="form-label">Acessorio</label>
+                <textarea type="text" class="form-control" id="inputAcessoriOs"></textarea>
+            </div>
             <div class="col-md-4">
+                <label class="form-label">Preço</label>
+                <input type="text" class="form-control" id="inputPriceOs" placeholder="$0.00">
+            </div>
+            <div class="col-md-8">
                 <label class="form-label">Atendente</label>
                 <input type="text" class="form-control" id="inputServiceOs">
             </div>
