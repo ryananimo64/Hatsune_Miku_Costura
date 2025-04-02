@@ -18,6 +18,7 @@ const { jspdf, default: jsPDF } = require('jspdf')
 const fs = require ('fs')
 
 const OSModel = require('./src/models/OS.js')
+const Clientes = require('./src/models/Clientes.js')
 
 
 // Janela principal
@@ -184,7 +185,8 @@ const template = [
         label: 'Relatórios',
         submenu: [
             {
-                label: 'Clientes'
+                label: 'Clientes',
+                click: () => relatorioClientes()
               },
               {
                 label: 'OS abertas'
@@ -261,34 +263,10 @@ ipcMain.on('new-client', async (event, client) => {
          //salvar os dados Clientes no banco de dados
          await newClient.save()
 
-         dialog.showMessageBox({
-            //customização
-            type: 'info',
-            title: "Aviso",
-            message: "Cliente adicionado com sucesso",
-            buttons: ['OK']
-        }).then((result) => {
-            //ação ao pressionar o botão (result = 0)
-            if(result.response === 0) {
-                //enviar um pedido para o renderizador limpar os campos e resetar as configurações pré definidas (rótulo 'reset-form' do preload.js
-                event.reply('reset-form')
-            } 
-        })   
-    } catch (error) {
-        if(error.code === 11000) {
-            dialog.showMessageBox({
-                type: 'error',
-                title: "Atenção!",
-                message: "CPF já está cadastrado\nVerifique se digitou corretamente",
-                buttons: ['OK']
-            }).then((result) => {
-                if (result.response === 0) {
-                    // limpar a caixa de input do cpf, focar esta caixa e deixar a borda em vermelho
-                }
-            })
-        }
+    }
+    catch{
         console.log(error)
-    } 
+    }
 })
 
 //== FIM - OS - CRUD CREATE
@@ -330,10 +308,15 @@ ipcMain.on('new-os', async (event, OS) => {
         // Passo 2:Formatação do documento pdf
         // p - portrait | l - landscape | mm e a4 (folha)
         const doc = new jsPDF('p', 'mm', 'a4')
+        
+        const imagePath = path.join(__dirname, 'src','public','img','logo2.png')
+        const imageBase64 = fs.readFileSync(imagePath,{encoding: 'base64'})
+
+        doc.addImage(imageBase64, 'PNG', 3,6)
         // definir o tamanho da fonte (tamanho equivalente ao word)
         doc.setFontSize(16)
         // escrever um texto (título)
-        doc.text("Relatório de clientes", 14, 20)//x, y (mm)
+        doc.text("Relatório de clientes", 14, 35)//x, y (mm)
         // inserir a data atual no relatório
         const dataAtual = new Date().toLocaleDateString('pt-BR')
         doc.setFontSize(12)
@@ -347,6 +330,36 @@ ipcMain.on('new-os', async (event, OS) => {
         // desenhar uma linha
         doc.setLineWidth(0.5) // expessura da linha
         doc.line(10, y, 200, y) // 10 (inicio) ---- 200 (fim)
+        // renderizar os clientes cadastrados no banco de dados
+        y += 10
+        CLientes.forEach((c) => {
+            //adicionar outra pagina se a folha inteira for prenchida
+            //a estrategia é saber o tamanho da folha
+            // Folha a4 y = 290mm
+            if(y > 280){
+                doc.addPage()
+                y=20
+                doc.text("Nome", 14, y)
+                doc.text("Telefone", 80, y)
+                doc.text("E-mail", 130, y)
+                y+=5
+                doc.setLineWidth(0.5) // expessura da linha
+                doc.line(10, y, 200, y) // 10 (inicio) ---- 200 (fim)
+                
+            }
+            doc.text(c.nomeCliente,14,y),
+            doc.text(c.foneCliente,80,y),
+            doc.text(c.emailCliente || "N/A",130,y)
+            y+=10 //quebra de linha
+        })
+
+        const paginas = doc.internal.getNumberOfPages()
+        for (let i = 1; i <= paginas; i++) {
+            doc.setPage(i)
+            doc.setFontSize(10)
+            doc.text(`Pagina ${i} de ${paginas}`,105,290,{align:'center'})
+        }
+
         // Definir o caminho do arquivo temporário e nome do arquivo
         const tempDir = app.getPath('temp')
         const filePath = path.join(tempDir, 'clientes.pdf')

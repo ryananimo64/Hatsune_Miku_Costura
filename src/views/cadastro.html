@@ -23,7 +23,7 @@
                 <!--nome-->
                  <div class="col-md-7">
                      <label for="nome">Nome Completo:</label>
-                     <input type="text" class="form-control" id="inputNameClient" spellcheck="false"  maxlength="100" required>
+                     <input type="text" class="form-control" id="inputNameClient" spellcheck="false"  maxlength="40" required>
                  </div>
                  <div class="col-md-5">
                      <label for="cpf">CPF:</label>
@@ -52,14 +52,14 @@
                 <!-- Número -->
                 <div class="col-md-3">
                     <label for="inputNumberClient" class="form-label">Número</label>
-                    <input type="text" class="form-control" id="inputNumberClient" spellcheck="false" maxlength="5"
+                    <input type="text" class="form-control" id="inputNumberClient" spellcheck="false" maxlength="11"
                         required>
                 </div>
     
                 <!-- Complemento -->
                 <div class="col-md-5">
                     <label for="inputComplementClient" class="form-label">Complemento</label>
-                    <input type="text" class="form-control" id="inputComplementClient" spellcheck="false" maxlength="12">
+                    <input type="text" class="form-control" id="inputComplementClient" spellcheck="false" maxlength="42">
                 </div>
     
                 <!-- Bairro -->
@@ -110,7 +110,7 @@
                     </select>
                  <!-- Botões -->
                 <div class="mt-3">
-                    <button type="submit" class="btn btn-success" id="btnCreate">Adicionar</button>
+                    <button type="submit" class="btn btn-success" id="btnCreate" >Adicionar</button>
                     <button type="submit" class="btn btn-warning" id="btnUpdate">Editar</button>
                     <button type="button" class="btn btn-danger" id="btnDelete">Excluir</button>
                     <button type="reset" class="btn" id="btnReset" onclick="resetForm()"></button>

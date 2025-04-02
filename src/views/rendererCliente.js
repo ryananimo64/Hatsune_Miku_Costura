@@ -54,7 +54,7 @@ frmClient.addEventListener('submit', async (event) => {
     // do formulario e reiniciar o documento html
     event.preventDefault()
 
-    console.log(nameClient.value,cpfClient.value,emailClient.value,foneClient.value,addressClient.value)
+    console.log(nameClient.value,cpfClient.value,emailClient.value,foneClient.value)
 
     const client = {
         nameCli: nameClient.value,
