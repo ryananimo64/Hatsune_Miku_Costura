@@ -11,7 +11,8 @@
 }
 h2 {
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
+  
 }
 .form-group {
     margin-bottom: 15px;
@@ -29,9 +30,13 @@ label {
     margin-left: 10px;
 }
 
-.button img {
+
+.button img{
     margin: 50px 15px 25px 15px;
     padding: 5px;
-    border: 1px solid #e8e8e8;
+    border: 1px solid #018dff;
     cursor: pointer;
+    height: 170px;
+    width: 170px;
+   
 }

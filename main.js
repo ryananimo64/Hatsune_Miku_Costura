@@ -345,6 +345,7 @@ ipcMain.on('new-os', async (event, OS) => {
                 y+=5
                 doc.setLineWidth(0.5) // expessura da linha
                 doc.line(10, y, 200, y) // 10 (inicio) ---- 200 (fim)
+                y += 10
                 
             }
             doc.text(c.nomeCliente,14,y),
