@@ -5,6 +5,7 @@
 //IMportação dos recursos do framework electron
 //ContextBridge (segurança) ipcrenderer(comunicação)
 const { contextBridge, ipcRenderer } = require('electron')
+const Renderer = require('electron/renderer')
 
 // Enviar ao main um pedido para conexão com o banco de dados e
 //troca de icone no processo de renderização(index.html - renderer.html)
@@ -17,5 +18,7 @@ contextBridge.exposeInMainWorld('api', {
     dbStatus: (message) => ipcRenderer.on('db-status',message),
     newClient: (client) => ipcRenderer.send('new-client',client),
     newOs: (OS) => ipcRenderer.send("new-os", OS),
-    resetForm: (args) => ipcRenderer.on('reset-form', args)
+    resetForm: (args) => ipcRenderer.on('reset-form', args),
+    searchName: (Name) => ipcRenderer.send('search-name', Name) ,
+    renderClient: (dataClient) => ipcRenderer.on('render-client', dataClient)
 })

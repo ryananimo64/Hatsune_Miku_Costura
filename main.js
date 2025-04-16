@@ -375,3 +375,25 @@ ipcMain.on('new-os', async (event, OS) => {
 
 // ====== Fim Relatório de Clientes ==================
 // ===================================================
+
+
+// ==================================================
+// ===========CRUD READ==============================
+ipcMain.on('search-name', async (event, Name) => {
+   //console.log("TESTE do ipc search-name")Passo 1 test do preload
+   //console.log(Name) Passo 2
+   try {
+    const dataClient = await clientModel.find({nomeCliente: new RegExp(Name,'i')})
+    console.log(dataClient)
+    // enviando os dados do cliente ao rendererCliente
+    // OBS: IPC só trabalha com string, então é necessario converter o json para string
+    event.reply('render-client', JSON.stringify(dataClient))
+
+   } catch (error) {
+    console.log(error)
+   }
+})
+
+
+// ====== Fim CRUD READ ==============================
+// ===================================================
