@@ -1,3 +1,5 @@
+const { eventNames } = require("../models/Clientes")
+
 // Buscar CEP
 function buscarCEP() {
     //console.log("teste do evento blur")
@@ -31,6 +33,30 @@ document.addEventListener('DOMContentLoaded', () => {
     btnDelete.disabled = true
     foco.focus()
 })
+//==========================================================
+//===============Manipulação da tecla enter=================
+
+
+// Função para manipular o evento da tecla enter
+function teclaEnter(event){
+    if (event.key === "Enter") {
+        event.preventDefault() // ignorar o comportamento padrão
+        // associar o enter a busca do cliente
+        buscarCliente()
+    }
+}
+
+//Função para restaurar o padrão da tecla enter(submit)
+function restaurarEnter() {
+    frmClient.removeEventListener('keydown', teclaEnter)
+}
+
+// "Escutar do evento tecla enter"
+frmClient.addEventListener('keydown', teclaEnter)
+
+//===============Fim da manipulação================
+//=================================================
+
 
 // captura dos dados dos inputs do formulario (Passo 1: Fluxo)
 let frmClient = document.getElementById('frmClient')
@@ -82,9 +108,14 @@ frmClient.addEventListener('submit', async (event) => {
 //=======================================================
 //==========CRUD READ====================================
 function buscarCliente() {
-    //console.log("TEST")
     let Name = document.getElementById('searchClient').value
     console.log(Name)//Teste passo 1
+    if (Name === "") {
+        api.validateSearch()
+        foco.focus()
+    } else {
+         //console.log("TEST")
+   
     api.searchName(Name)//
     //recebimento dos dados do cliente
     api.renderClient((event,dataClient) => {
@@ -112,6 +143,20 @@ function buscarCliente() {
         });
     })
 }
+    }
+
+//setar o cliente não cadastrado(recortar do campo de busca e colar no campo nome)
+api.setClient((args) => {
+    //criar uma variavel para armazenar o valor digitado no campo de busca
+    let campoBusca = document.getElementById('searchClient').value
+    // foco no campo de nome do cliente
+    nameClient.focus()
+    //remover o valor digitado no campo de busca
+    foco.value = ""
+    //preencher o campo do nome do cliente com o nome da busca
+    nameClient.value = campoBusca 
+
+})
 
 //==========FIM DO CRUD READ=============================
 //=======================================================

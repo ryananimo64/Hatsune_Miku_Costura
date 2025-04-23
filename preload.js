@@ -7,6 +7,7 @@
 const { contextBridge, ipcRenderer } = require('electron')
 const Renderer = require('electron/renderer')
 
+
 // Enviar ao main um pedido para conexão com o banco de dados e
 //troca de icone no processo de renderização(index.html - renderer.html)
 ipcRenderer.send('db-connect')
@@ -20,5 +21,7 @@ contextBridge.exposeInMainWorld('api', {
     newOs: (OS) => ipcRenderer.send("new-os", OS),
     resetForm: (args) => ipcRenderer.on('reset-form', args),
     searchName: (Name) => ipcRenderer.send('search-name', Name) ,
-    renderClient: (dataClient) => ipcRenderer.on('render-client', dataClient)
+    renderClient: (dataClient) => ipcRenderer.on('render-client', dataClient),
+    validateSearch: () => ipcRenderer.send('validate-search'),
+    setClient: (args) => ipcRenderer.on('set-client', args)
 })
