@@ -1,4 +1,4 @@
-const { eventNames } = require("../models/Clientes")
+
 
 // Buscar CEP
 function buscarCEP() {
@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
 //===============Manipulação da tecla enter=================
 
 
-// Função para manipular o evento da tecla enter
+/* Função para manipular o evento da tecla enter
 function teclaEnter(event){
     if (event.key === "Enter") {
         event.preventDefault() // ignorar o comportamento padrão
@@ -55,7 +55,7 @@ function restaurarEnter() {
 frmClient.addEventListener('keydown', teclaEnter)
 
 //===============Fim da manipulação================
-//=================================================
+//=================================================*/
 
 
 // captura dos dados dos inputs do formulario (Passo 1: Fluxo)
@@ -71,6 +71,8 @@ let complementClient = document.getElementById('inputComplementClient')
 let neighborhoodClient = document.getElementById('inputNeighborhoodClient')
 let cityClient = document.getElementById('inputCityClient')
 let ufClient = document.getElementById('inputUFClient')
+//captura do id do cliente (usado no update e no delete)
+let id = document.getElementById('idClient')
 
 
 //=====================================================
@@ -129,6 +131,7 @@ function buscarCliente() {
         arrayClient = dadosCliente
         //extrair os dados do cliente
         arrayClient.forEach((c) => {
+            id.value = c._id,
             nameClient.value = c.nomeCliente,
             cpfClient.value = c.cpfCliente,
             emailClient.value = c.emailCliente,
@@ -140,6 +143,10 @@ function buscarCliente() {
             neighborhoodClient.value = c.bairroCliente,
             cityClient.value = c.cidadeCliente,
             ufClient.value = c.ufCliente
+
+            btnCreate.disabled=true
+            btnUpdate.disabled=false
+            btnDelete.disabled=false
         });
     })
 }
@@ -160,6 +167,18 @@ api.setClient((args) => {
 
 //==========FIM DO CRUD READ=============================
 //=======================================================
+
+
+//=======================================================
+//==========CRUD DELETE====================================
+function excluirCliente() {
+    console.log(id.value)// Passo 1 (receber do form o id)
+    api.deleteClient(id.value) // Passo 2 (enviar o id para o main)
+}
+
+//==========FIM DO CRUD DELETE=============================
+//=======================================================
+
 
 // ============================================================
  // == Reset form ==============================================
