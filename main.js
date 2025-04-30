@@ -6,16 +6,16 @@ const { link } = require('node:fs')
 const path = require('node:path')
 
 //importação dos metodos conectar e desconectar(modulo de conexão)
-const {conectar , desconectar} = require("./database.js")
+const { conectar, desconectar } = require("./database.js")
 
 // Importação do schema Clientes da camada model
-const clientModel = require ('./src/models/Clientes.js')
+const clientModel = require('./src/models/Clientes.js')
 
 // Importação do pacote jspdf (npm i jspdf)
 const { jspdf, default: jsPDF } = require('jspdf')
- 
+
 // Importação da biblioteca FS (nativa do JavaScript) para manipulação de arquivos (no caso arquvios pdf)
-const fs = require ('fs')
+const fs = require('fs')
 
 const OSModel = require('./src/models/OS.js')
 const Clientes = require('./src/models/Clientes.js')
@@ -54,56 +54,56 @@ const createWindow = () => {
 //Fim da janela principal
 
 // Janela Sobre
-function aboutWindow(){
-    nativeTheme.themeSource ='dark'
+function aboutWindow() {
+    nativeTheme.themeSource = 'dark'
     //a linha abaixo obtém a janela principal
     const main = BrowserWindow.getFocusedWindow()
     let about
     //estabelecer uma relação hierarquica entre janelas
     if (main) {
-      //criar a janela sobre
-       about = new BrowserWindow({
-        width: 360,
-        height: 260,
-        autoHideMenuBar: true,
-        resizable:false,
-        minimizable: false,
-        parent: main,
-        modal: true
-       })
+        //criar a janela sobre
+        about = new BrowserWindow({
+            width: 360,
+            height: 260,
+            autoHideMenuBar: true,
+            resizable: false,
+            minimizable: false,
+            parent: main,
+            modal: true
+        })
     }
     //carregar o documento html na janela
     about.loadFile('./src/views/sobre.html')
-  }
+}
 
-  let client
-  function clientwindow() {
-      nativeTheme.themeSource = 'light'
-      const main = BrowserWindow.getFocusedWindow()
-      if(main) {
-          client = new BrowserWindow({
-              width: 1010,
-              height: 720,
-              autoHideMenuBar: true,
-              resizable: false,
-              parent: main,
-              modal: true,
-              webPreferences: {
+let client
+function clientwindow() {
+    nativeTheme.themeSource = 'light'
+    const main = BrowserWindow.getFocusedWindow()
+    if (main) {
+        client = new BrowserWindow({
+            width: 1010,
+            height: 720,
+            autoHideMenuBar: true,
+            resizable: false,
+            parent: main,
+            modal: true,
+            webPreferences: {
                 preload: path.join(__dirname, 'preload.js')
             }
-            
-          })
-      }
-      client.loadFile('./src/views/cadastro.html')
-      client.center()
-  }
+
+        })
+    }
+    client.loadFile('./src/views/cadastro.html')
+    client.center()
+}
 
 
-  let os
+let os
 function oswindow() {
     nativeTheme.themeSource = 'light'
     const main = BrowserWindow.getFocusedWindow()
-    if(main) {
+    if (main) {
         client = new BrowserWindow({
             width: 1010,
             height: 720,
@@ -143,18 +143,18 @@ ipcMain.on('db-connect', async (event) => {
 
 
 
-let conectado = await conectar()
+    let conectado = await conectar()
 
-if(conectado){   
+    if (conectado) {
         setTimeout(() => {
-            event.reply('db-status',"Conectado")
-        },500)
-        
-}
+            event.reply('db-status', "Conectado")
+        }, 500)
+
+    }
 })
 // Importante !! Deconectar  do banco de dados quando a aplicação for encerrada
-app.on('before-quit', () =>{
-     desconectar()
+app.on('before-quit', () => {
+    desconectar()
 })
 
 // template do menu
@@ -173,7 +173,7 @@ const template = [
             {
                 type: 'separator'
             },
-            
+
             {
                 label: 'Sair',
                 click: () => app.quit(),
@@ -187,16 +187,16 @@ const template = [
             {
                 label: 'Clientes',
                 click: () => relatorioClientes()
-              },
-              {
+            },
+            {
                 label: 'OS abertas'
-              },
-              {
+            },
+            {
                 label: 'OS concluídas'
-              }
-        
-    ]
-    },    
+            }
+
+        ]
+    },
     {
         label: 'Ferramentas',
         submenu: [
@@ -216,8 +216,8 @@ const template = [
                 type: 'separator'
             },
             {
-              label: 'Recarregar',
-               role: 'reload'
+                label: 'Recarregar',
+                role: 'reload'
             },
             {
                 label: 'Ferramentas do desenvolvedor',
@@ -259,12 +259,13 @@ ipcMain.on('new-client', async (event, client) => {
             complementoCliente: client.complementCli,
             bairroCliente: client.neighborhoodClient,
             cidadeCliente: client.cityCli,
+            ufCliente: client.ufCli
         })
-         //salvar os dados Clientes no banco de dados
-         await newClient.save()
+        //salvar os dados Clientes no banco de dados
+        await newClient.save()
 
     }
-    catch{
+    catch {
         console.log(error)
     }
 })
@@ -287,19 +288,19 @@ ipcMain.on('new-os', async (event, OS) => {
             acessorioOS: OS.orderacessori,
             precoOS: OS.orderPrice
         })
-         //salvar os dados Clientes no banco de dados
-         await newOs.save()
+        //salvar os dados Clientes no banco de dados
+        await newOs.save()
     } catch (error) {
         console.log(error)
-    } 
+    }
 })
 
 //== FIM - OS - CRUD CREATE
 
 // ==========================================================
- // ===== Relatório de Clientes ==============================
- 
- async function relatorioClientes() {
+// ===== Relatório de Clientes ==============================
+
+async function relatorioClientes() {
     try {
         // Passo 1: Consultar o banco de dados e obter a listagem de clientes cadastrados por ordem alfabética
         const CLientes = await clientModel.find().sort({ nomeCliente: 1 })
@@ -308,11 +309,11 @@ ipcMain.on('new-os', async (event, OS) => {
         // Passo 2:Formatação do documento pdf
         // p - portrait | l - landscape | mm e a4 (folha)
         const doc = new jsPDF('p', 'mm', 'a4')
-        
-        const imagePath = path.join(__dirname, 'src','public','img','logo2.png')
-        const imageBase64 = fs.readFileSync(imagePath,{encoding: 'base64'})
 
-        doc.addImage(imageBase64, 'PNG', 3,6)
+        const imagePath = path.join(__dirname, 'src', 'public', 'img', 'logo2.png')
+        const imageBase64 = fs.readFileSync(imagePath, { encoding: 'base64' })
+
+        doc.addImage(imageBase64, 'PNG', 3, 6)
         // definir o tamanho da fonte (tamanho equivalente ao word)
         doc.setFontSize(16)
         // escrever um texto (título)
@@ -336,29 +337,29 @@ ipcMain.on('new-os', async (event, OS) => {
             //adicionar outra pagina se a folha inteira for prenchida
             //a estrategia é saber o tamanho da folha
             // Folha a4 y = 290mm
-            if(y > 280){
+            if (y > 280) {
                 doc.addPage()
-                y=20
+                y = 20
                 doc.text("Nome", 14, y)
                 doc.text("Telefone", 80, y)
                 doc.text("E-mail", 130, y)
-                y+=5
+                y += 5
                 doc.setLineWidth(0.5) // expessura da linha
                 doc.line(10, y, 200, y) // 10 (inicio) ---- 200 (fim)
                 y += 10
-                
+
             }
-            doc.text(c.nomeCliente,14,y),
-            doc.text(c.foneCliente,80,y),
-            doc.text(c.emailCliente || "N/A",130,y)
-            y+=10 //quebra de linha
+            doc.text(c.nomeCliente, 14, y),
+                doc.text(c.foneCliente, 80, y),
+                doc.text(c.emailCliente || "N/A", 130, y)
+            y += 10 //quebra de linha
         })
 
         const paginas = doc.internal.getNumberOfPages()
         for (let i = 1; i <= paginas; i++) {
             doc.setPage(i)
             doc.setFontSize(10)
-            doc.text(`Pagina ${i} de ${paginas}`,105,290,{align:'center'})
+            doc.text(`Pagina ${i} de ${paginas}`, 105, 290, { align: 'center' })
         }
 
         // Definir o caminho do arquivo temporário e nome do arquivo
@@ -379,7 +380,7 @@ ipcMain.on('new-os', async (event, OS) => {
 
 // ==================================================
 // ===========CRUD READ==============================
-ipcMain.on('validate-search', () =>{
+ipcMain.on('validate-search', () => {
     dialog.showMessageBox({
         type: 'warning',
         title: "Atenção!",
@@ -389,20 +390,104 @@ ipcMain.on('validate-search', () =>{
 })
 
 ipcMain.on('search-name', async (event, Name) => {
-   //console.log("TESTE do ipc search-name")Passo 1 test do preload
-   //console.log(Name) Passo 2
-   try {
-    const dataClient = await clientModel.find({nomeCliente: new RegExp(Name,'i')})
-    console.log(dataClient)
+    //console.log("TESTE do ipc search-name")Passo 1 test do preload
+    //console.log(Name) Passo 2
+    try {
+        const dataClient = await clientModel.find({ nomeCliente: new RegExp(Name, 'i') })
+        console.log(dataClient)
 
 
-    if (dataClient.length === 0) {
+        if (dataClient.length === 0) {
+            dialog.showMessageBox({
+                type: 'warning',
+                title: "Aviso",
+                message: "Cliente não cadastrado, deseja cadastrar?",
+                defaultId: 0,
+                buttons: ['Sim', 'Não']
+            }).then((result => {
+                if (result.response === 0) {
+                    //enviar ao renderizador um pedido para setar os campos(recotar dos campos e colar no campos)
+                    event.reply('set-client')
+                } else {
+                    event.reply('reset-form')
+                }
+            }))
+        }
+
+        // enviando os dados do cliente ao rendererCliente
+        // OBS: IPC só trabalha com string, então é necessario converter o json para string
+        event.reply('render-client', JSON.stringify(dataClient))
+
+    } catch (error) {
+        console.log(error)
+    }
+})
+
+
+// ====== Fim CRUD READ ==============================
+// ===================================================
+
+// +==================================================
+// ====== CRUD DELETE=================================
+ipcMain.on('delete-client', async (event, id) => {
+    console.log(id) //teste do passo 2
+    try {
+        // importante - confirmar a exclusão
+        // client é o nome da variavel
+        const { response } = await dialog.showMessageBox(client, {
+            type: 'warning',
+            title: "Atenção!!!",
+            message: "Deseja excluir este cliente??\n Esta ação não poderá desfeita",
+            buttons: ['Cancelar', 'Excluir']//[0,1] 
+        })
+        if (response === 1) {
+            //Passo 3 - Excluir o registro do cliente
+
+            const delClient = await clientModel.findByIdAndDelete(id)
+            event.reply('reset-form')
+        }
+    } catch (error) {
+        console.log(error)
+    }
+})
+//======= FIM DO CRUD DELETE =========================
+//====================================================
+
+
+
+// +==================================================
+// ====== CRUD UPDATE=================================
+ipcMain.on('update-client', async ((event, client) => {
+    console.log(client)
+    try {
+        //cria uma nova estrutura de dados usando classe  modelo
+        const updateCliente = await clientModel.findByIdAndUpdate(
+            client.idCli,
+            {
+                nomeCliente: client.nameCli,
+                cpfCliente: client.cpfCli,
+                emailCliente: client.emailCli,
+                foneCliente: client.foneCli,
+                cepCliente: client.cepCli,
+                logradouroCliente: client.logradouroCli,
+                numeroCliente: client.numberCli,
+                complementoCliente: client.complementCli,
+                bairroCliente: client.neighborhoodClient,
+                cidadeCliente: client.cityCli,
+                ufCliente: client.ufCli
+            },
+            {
+                new:true
+            }
+    )
+    //confirmação
+   
         dialog.showMessageBox({
             type: 'warning',
             title: "Aviso",
-            message: "Cliente não cadastrado, deseja cadastrar?",
+            message: "deseja alterar o usuario?",
             defaultId: 0,
-            buttons: ['Sim' , 'Não']
+            buttons: ['Sim', 'Não']
         }).then((result => {
             if (result.response === 0) {
                 //enviar ao renderizador um pedido para setar os campos(recotar dos campos e colar no campos)
@@ -411,42 +496,11 @@ ipcMain.on('search-name', async (event, Name) => {
                 event.reply('reset-form')
             }
         }))
-    }
-    
-    // enviando os dados do cliente ao rendererCliente
-    // OBS: IPC só trabalha com string, então é necessario converter o json para string
-    event.reply('render-client', JSON.stringify(dataClient))
-
-    }catch (error) {
-    console.log(error)
-   }})
-
-
-// ====== Fim CRUD READ ==============================
-// ===================================================
-
-// +==================================================
-// ====== CRUD DELETE=================================
-ipcMain.on('delete-client' ,async (event,id) => {
-    console.log(id) //teste do passo 2
-    try {
-            // importante - confirmar a exclusão
-            // client é o nome da variavel
-            const {response} = await dialog.showMessageBox(client, {
-                type: 'warning',
-                title: "Atenção!!!",
-                message:"Deseja excluir este cliente??\n Esta ação não poderá desfeita",
-                buttons: ['Cancelar','Excluir']//[0,1] 
-            })
-            if (response === 1) {
-                //Passo 3 - Excluir o registro do cliente
-
-                const delClient = await clientModel.findByIdAndDelete(id)
-                event.reply('reset-form')
-            }        
     } catch (error) {
         console.log(error)
     }
-})
-//======= FIM DO CRUD DELETE =========================
+}))
+
+//======= FIM DO CRUD UPDATE =========================
 //====================================================
+

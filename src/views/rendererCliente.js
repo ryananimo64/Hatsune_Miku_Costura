@@ -84,24 +84,52 @@ frmClient.addEventListener('submit', async (event) => {
     // do formulario e reiniciar o documento html
     event.preventDefault()
 
-    console.log(nameClient.value,cpfClient.value,emailClient.value,foneClient.value)
+    console.log(nameClient.value, cpfClient.value, emailClient.value, foneClient.value, id.value)
 
-    const client = {
-        nameCli: nameClient.value,
-        cpfCli: cpfClient.value,
-        emailCli: emailClient.value,
-        foneCli: foneClient.value,
-        cepCli: cepClient.value,
-        logradouroCli: logradouroClient.value,
-        numberCli: numberClient.value,
-        complementCli: complementClient.value,
-        neighborhoodClient: neighborhoodClient.value,
-        cityCli: cityClient.value,
-        ufClie: ufClient.value
+    //estrategia usada para reutilizar o submit para criar um novo cliente ou alterar os dados de um cliente
+    // se existir id significa que existe um cliente senão significa que é para adicionar um novo cliente
+    if (id.value === "") {
+        // executar o método para cadastra um cliente
+        // CRIAR um objeto para armazenar os dados do cliente antes de enviar ao main
+        const client = {
+            nameCli: nameClient.value,
+            cpfCli: cpfClient.value,
+            emailCli: emailClient.value,
+            foneCli: foneClient.value,
+            cepCli: cepClient.value,
+            logradouroCli: logradouroClient.value,
+            numberCli: numberClient.value,
+            complementCli: complementClient.value,
+            neighborhoodClient: neighborhoodClient.value,
+            cityCli: cityClient.value,
+            ufClie: ufClient.value
+        }
+
+
+        // Enviar ao main o objeto client- (Passo 2: Fluxo)
+        api.newClient(client)
+    } else {
+        // executar o metodo para alterar os dados do cliente
+        // CRIAR um objeto para armazenar os dados do cliente antes de enviar ao main
+        const client = {
+            idCli: id.value,
+            nameCli: nameClient.value,
+            cpfCli: cpfClient.value,
+            emailCli: emailClient.value,
+            foneCli: foneClient.value,
+            cepCli: cepClient.value,
+            logradouroCli: logradouroClient.value,
+            numberCli: numberClient.value,
+            complementCli: complementClient.value,
+            neighborhoodClient: neighborhoodClient.value,
+            cityCli: cityClient.value,
+            ufClie: ufClient.value
+        }
+        // Enviar ao main o objeto client- (Passo 2: Fluxo)
+        api.updateClient(client)
     }
 
-     // Enviar ao main o objeto client- (Passo 2: Fluxo)
-     api.newClient(client)
+
 })
 
 //==========FIM DO CRUD CREATE================================
@@ -116,41 +144,41 @@ function buscarCliente() {
         api.validateSearch()
         foco.focus()
     } else {
-         //console.log("TEST")
-   
-    api.searchName(Name)//
-    //recebimento dos dados do cliente
-    api.renderClient((event,dataClient) => {
-        console.log(dataClient) // Teste do passo 5
-        // Passo 6: renderizar o dados do clientes
-        //Cria um vator global para manipulação dos dados
-        // cirar uma constante para converter os dados recebidos(string) para o formato jason
-        //usar o laço  forEach para percorre o vetor e setar os campos(caixas de texto) do formulario
-        const dadosCliente = JSON.parse(dataClient) 
-        // atribuir ao vetor os dados do cliente
-        arrayClient = dadosCliente
-        //extrair os dados do cliente
-        arrayClient.forEach((c) => {
-            id.value = c._id,
-            nameClient.value = c.nomeCliente,
-            cpfClient.value = c.cpfCliente,
-            emailClient.value = c.emailCliente,
-            foneClient.value = c.foneCliente,
-            cepClient.value = c.cepCliente,
-            logradouroClient.value = c.logradouroCliente,
-            numberClient.value = c.numeroCliente,
-            complementClient.value = c.complementoClinte,
-            neighborhoodClient.value = c.bairroCliente,
-            cityClient.value = c.cidadeCliente,
-            ufClient.value = c.ufCliente
+        //console.log("TEST")
 
-            btnCreate.disabled=true
-            btnUpdate.disabled=false
-            btnDelete.disabled=false
-        });
-    })
-}
+        api.searchName(Name)//
+        //recebimento dos dados do cliente
+        api.renderClient((event, dataClient) => {
+            console.log(dataClient) // Teste do passo 5
+            // Passo 6: renderizar o dados do clientes
+            //Cria um vator global para manipulação dos dados
+            // cirar uma constante para converter os dados recebidos(string) para o formato jason
+            //usar o laço  forEach para percorre o vetor e setar os campos(caixas de texto) do formulario
+            const dadosCliente = JSON.parse(dataClient)
+            // atribuir ao vetor os dados do cliente
+            arrayClient = dadosCliente
+            //extrair os dados do cliente
+            arrayClient.forEach((c) => {
+                id.value = c._id,
+                    nameClient.value = c.nomeCliente,
+                    cpfClient.value = c.cpfCliente,
+                    emailClient.value = c.emailCliente,
+                    foneClient.value = c.foneCliente,
+                    cepClient.value = c.cepCliente,
+                    logradouroClient.value = c.logradouroCliente,
+                    numberClient.value = c.numeroCliente,
+                    complementClient.value = c.complementoClinte,
+                    neighborhoodClient.value = c.bairroCliente,
+                    cityClient.value = c.cidadeCliente,
+                    ufClient.value = c.ufCliente
+
+                btnCreate.disabled = true
+                btnUpdate.disabled = false
+                btnDelete.disabled = false
+            });
+        })
     }
+}
 
 //setar o cliente não cadastrado(recortar do campo de busca e colar no campo nome)
 api.setClient((args) => {
@@ -161,7 +189,7 @@ api.setClient((args) => {
     //remover o valor digitado no campo de busca
     foco.value = ""
     //preencher o campo do nome do cliente com o nome da busca
-    nameClient.value = campoBusca 
+    nameClient.value = campoBusca
 
 })
 
@@ -181,8 +209,8 @@ function excluirCliente() {
 
 
 // ============================================================
- // == Reset form ==============================================
- function resetForm() {
+// == Reset form ==============================================
+function resetForm() {
     // Limpar os campos e resetar o formulário com as configurações pré definidas
     location.reload()
 }
