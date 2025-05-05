@@ -12,6 +12,8 @@ let typeOs = document.getElementById('inputTypeOs')
 let problemOS = document.getElementById('inputProblemOs')
 let serviceOS = document.getElementById('inputServiceOs')
 let sizeOS = document.getElementById('inputSizeOs')
+let heightOS = document.getElementById('inputHightOS')
+let widthOS = document.getElementById('inputWidthOS')
 let acessoriOS = document.getElementById('inputAcessoriOs')
 let priceOS = document.getElementById('inputPriceOs')
 
@@ -35,6 +37,8 @@ frmOs.addEventListener('submit', async (event) => {
         orderProblem: problemOS.value,
         orderService: serviceOS.value,
         orderSize: sizeOS.value,
+        orderHight: heightOS.value,
+        orderWidth: widthOS.value,
         orderacessori: acessoriOS.value,
         orderPrice: priceOS.value
         }

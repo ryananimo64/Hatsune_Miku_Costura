@@ -270,7 +270,7 @@ ipcMain.on('new-client', async (event, client) => {
     }
 })
 
-//== FIM - OS - CRUD CREATE
+//== INICIO - OS - CRUD CREATE
 ipcMain.on('new-os', async (event, OS) => {
     // IMPORTANTE!! teste do passo dois
     console.log(OS)
@@ -285,6 +285,8 @@ ipcMain.on('new-os', async (event, OS) => {
             problemaOS: OS.orderProblem,
             costureiraOS: OS.orderService,
             tamanhoOS: OS.orderSize,
+            alturaOS: OS.orderHight,
+            larguraOS: OS.orderWidth,
             acessorioOS: OS.orderacessori,
             precoOS: OS.orderPrice
         })
@@ -423,6 +425,47 @@ ipcMain.on('search-name', async (event, Name) => {
     }
 })
 
+ipcMain.on('search-name', async (event, name) => {
+    console.log("teste IPC search-name")
+
+    //Passo 3 e 4: Busca dos dados do cliente no banco
+
+    //find({nomeCliente: name}) - busca pelo nome
+    //RegExp(name, i) - i (insensitive / Ignorar maiúsculo ou minúsculo)
+    try {
+        const dataClient  = await clientModel.find({
+            $or: [
+              { nomeClient: new RegExp(name, 'i') },
+              { cpfCliente: new RegExp(name, 'i') }
+            ]
+          })
+        console.log(dataClient)//Teste do pásso 3 e 4
+          
+        if (dataClient.length === 0) {
+            dialog.showMessageBox({
+                type: 'warning',
+                title: "Aviso",
+                message: "Cliente não cadastrado, deseja cadastrar?",
+                defaultId: 0,
+                buttons: ['Sim', 'Não']
+            }).then((result => {
+                if (result.response === 0) {
+                    //enviar ao renderizador um pedido para setar os campos(recotar dos campos e colar no campos)
+                    event.reply('set-client')
+                } else {
+                    event.reply('reset-form')
+                }
+            }))
+        }
+        //Passo 5: 
+        //Enviando os dados do cliente ao rendererCliente
+        //OBS: ipc só trabalha com string, então é necessario converter o JSON para JSON.stringify(dataClient)
+        event.reply('render-client', JSON.stringify(dataClient))
+    } catch (error) {
+        console.log(error)
+    }
+})
+
 
 // ====== Fim CRUD READ ==============================
 // ===================================================
@@ -457,7 +500,7 @@ ipcMain.on('delete-client', async (event, id) => {
 
 // +==================================================
 // ====== CRUD UPDATE=================================
-ipcMain.on('update-client', async ((event, client) => {
+ipcMain.on('update-client', async (event, client) => {
     console.log(client)
     try {
         //cria uma nova estrutura de dados usando classe  modelo
@@ -485,21 +528,19 @@ ipcMain.on('update-client', async ((event, client) => {
         dialog.showMessageBox({
             type: 'warning',
             title: "Aviso",
-            message: "deseja alterar o usuario?",
+            message: "Dados do cliente foi alterado",
             defaultId: 0,
-            buttons: ['Sim', 'Não']
+            buttons: ['Ok']
         }).then((result => {
             if (result.response === 0) {
                 //enviar ao renderizador um pedido para setar os campos(recotar dos campos e colar no campos)
-                event.reply('set-client')
-            } else {
                 event.reply('reset-form')
-            }
+            } 
         }))
     } catch (error) {
         console.log(error)
     }
-}))
+})
 
 //======= FIM DO CRUD UPDATE =========================
 //====================================================

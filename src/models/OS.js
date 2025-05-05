@@ -14,6 +14,8 @@ const OSchema = new Schema({
     problemaOS: {type:String},
     costureiraOS: {type:String},
     tamanhoOS: {type:String},
+    alturaOS: {type:String},
+    larguraOS:{type:String},
     acessorioOS: {type:String},
     precoOS: {type:String}
 

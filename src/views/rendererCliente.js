@@ -21,6 +21,66 @@ function buscarCEP() {
         .catch(error => console.log(error))
 }
 
+// Função para aplicar a máscara no CPF
+function aplicarMascaraCPF(campo) {
+    let cpf = campo.value.replace(/\D/g, "").slice(0, 11); // mantêm até 11 dígitos
+    if (cpf.length > 9) {
+        campo.value = cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{1,2})/, "$1.$2.$3-$4");
+    } else if (cpf.length > 6) {
+        campo.value = cpf.replace(/(\d{3})(\d{3})(\d{1,3})/, "$1.$2.$3");
+    } else if (cpf.length > 3) {
+        campo.value = cpf.replace(/(\d{3})(\d{1,3})/, "$1.$2");
+    } else {
+        campo.value = cpf;
+    }
+}
+
+// Função para validar CPF
+function validarCPF() {
+    const campo = document.getElementById('inputCPFClient');
+    let cpf = campo.value.replace(/\D/g, "");
+
+    // Validações: CPF inválido ou com todos os números iguais
+    if (cpf.length !== 11 || /^(\d)\1{10}$/.test(cpf)) {
+        campo.style.borderColor = "red";
+        campo.style.color = "red";
+        return false;
+    }
+
+    // Validação do primeiro dígito verificador
+    let soma = 0, resto;
+    for (let i = 1; i <= 9; i++) soma += parseInt(cpf[i - 1]) * (11 - i);
+    resto = (soma * 10) % 11;
+    if (resto !== parseInt(cpf[9])) return mostrarErro(campo);
+
+    // Validação do segundo dígito verificador
+    soma = 0;
+    for (let i = 1; i <= 10; i++) soma += parseInt(cpf[i - 1]) * (12 - i);
+    resto = (soma * 10) % 11;
+    if (resto !== parseInt(cpf[10])) return mostrarErro(campo);
+
+    campo.style.borderColor = "green";
+    campo.style.color = "green";
+    return true;
+}
+
+// Função para exibir erro de CPF inválido
+function mostrarErro(campo) {
+    campo.style.borderColor = "red";
+    campo.style.color = "red";
+    return false;
+}
+
+// Adicionar eventos para CPF
+const cpfInput = document.getElementById('inputCPFClient');
+if (cpfInput) {
+    cpfInput.addEventListener("input", () => aplicarMascaraCPF(cpfInput)); // Máscara ao digitar
+    cpfInput.addEventListener("blur", validarCPF); // Validação ao perder o foco
+}
+
+
+// == Fim - validar CPF =======================================
+
 // Vetor global que será usado na manipulação dos dados
 let arrayClient = []
 
@@ -123,7 +183,7 @@ frmClient.addEventListener('submit', async (event) => {
             complementCli: complementClient.value,
             neighborhoodClient: neighborhoodClient.value,
             cityCli: cityClient.value,
-            ufClie: ufClient.value
+            ufCli: ufClient.value
         }
         // Enviar ao main o objeto client- (Passo 2: Fluxo)
         api.updateClient(client)
