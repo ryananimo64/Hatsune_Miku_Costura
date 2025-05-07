@@ -49,3 +49,78 @@ frmOs.addEventListener('submit', async (event) => {
 
 //==========FIM DO cRUD================================
 //=====================================================
+
+
+//=====================================================
+//============BUSCAR ESTILO GOOGLE=====================
+// capturar os ids referente aos campos do nome
+const input = document.getElementById('inputSearchClient')
+//capturar o id do ul da lista de sugestão de clientes
+const suggestionList = document.getElementById('viewListSuggestion')
+// capturar os campos que vão ser preencidos
+let idClient = document.getElementById('inputIdClient')
+let nameClient = document.getElementById('inputNameClient')
+let phoneClient = document.getElementById('inputPhoneClient')
+
+// vetor usado na manipulação de dados
+let arrayClients = []
+
+//capturar em tempo real do input (digitação de caracteres na caixa de busca)
+input.addEventListener('input', () =>{
+    // passo 1: capturar o que for digitado na caixa de busca e converter
+    // tudo para letras minusculas (auxilio ao filtro)
+    const search = input.value.toLowerCase()
+    console.log(search) // teste de apoio a logica
+    api.searchClients()
+
+    api.listClients((event,clients)=>{
+        //console.log(clients)
+        const dataClients = JSON.parse(clients)
+        arrayClients = dataClients
+        const results = arrayClients.filter(c =>
+          c.nomeCliente  &&  c.nomeCliente.toLowerCase().includes(search)
+        ).slice(0,10) // maximo 10 resultados
+        //console.log(results)
+        suggestionList.innerHTML = ""
+        results.forEach(c => {
+            const item = document.createElement('li')
+            item.classList.add('list-group-item', 'list-group-item-action')
+            item.textContent = c.nomeCliente
+            
+        suggestionList.appendChild(item)
+
+
+        item.addEventListener('click', () =>{
+            idClient.value = c._id 
+            nameClient.value = c.nomeCliente
+            phoneClient.value = c.foneCliente
+
+            input.value = ""
+            suggestionList.innerHTML = ""
+        })
+
+        })
+    })
+})
+
+document.addEventListener('click', (event) =>{
+    if(!input.contains(event.target) && !suggestionList.contains(event.target)){
+        suggestionList.innerHTML = ""
+    }
+})
+
+//==========FIM DO CRUD================================
+//=====================================================
+
+
+
+
+//==============================================================
+//===========FIM DO CRUD OS BUSCAR==============================
+
+function inputOS(){
+    api.searchOS()
+}
+
+//==========FIM DO CRUD OS BUSCAR================================
+//===============================================================

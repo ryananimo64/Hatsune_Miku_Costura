@@ -17,6 +17,8 @@ const { jspdf, default: jsPDF } = require('jspdf')
 // Importação da biblioteca FS (nativa do JavaScript) para manipulação de arquivos (no caso arquvios pdf)
 const fs = require('fs')
 
+const prompt = require('electron-prompt')
+
 const OSModel = require('./src/models/OS.js')
 const Clientes = require('./src/models/Clientes.js')
 
@@ -391,39 +393,7 @@ ipcMain.on('validate-search', () => {
     })
 })
 
-ipcMain.on('search-name', async (event, Name) => {
-    //console.log("TESTE do ipc search-name")Passo 1 test do preload
-    //console.log(Name) Passo 2
-    try {
-        const dataClient = await clientModel.find({ nomeCliente: new RegExp(Name, 'i') })
-        console.log(dataClient)
 
-
-        if (dataClient.length === 0) {
-            dialog.showMessageBox({
-                type: 'warning',
-                title: "Aviso",
-                message: "Cliente não cadastrado, deseja cadastrar?",
-                defaultId: 0,
-                buttons: ['Sim', 'Não']
-            }).then((result => {
-                if (result.response === 0) {
-                    //enviar ao renderizador um pedido para setar os campos(recotar dos campos e colar no campos)
-                    event.reply('set-client')
-                } else {
-                    event.reply('reset-form')
-                }
-            }))
-        }
-
-        // enviando os dados do cliente ao rendererCliente
-        // OBS: IPC só trabalha com string, então é necessario converter o json para string
-        event.reply('render-client', JSON.stringify(dataClient))
-
-    } catch (error) {
-        console.log(error)
-    }
-})
 
 ipcMain.on('search-name', async (event, name) => {
     console.log("teste IPC search-name")
@@ -544,4 +514,59 @@ ipcMain.on('update-client', async (event, client) => {
 
 //======= FIM DO CRUD UPDATE =========================
 //====================================================
+
+
+//************************************************************/
+//*******************  Ordem de Serviço  *********************/
+//************************************************************/
+
+
+// ============================================================
+// == Buscar OS ===============================================
+
+ipcMain.on('search-os', (event) => {
+    //console.log("teste: busca OS")
+    prompt({
+        title: 'Buscar OS',
+        label: 'Digite o número da OS:',
+        inputAttrs: {
+            type: 'text'
+        },
+        type: 'input',        
+        width: 400,
+        height: 200
+    }).then((result) => {
+        if (result !== null) {
+            console.log(result)
+            //buscar a os no banco pesquisando pelo valor do result (número da OS)
+
+        } 
+    })
+})
+
+// == Fim - Buscar OS =========================================
+// ============================================================
+
+// ============================================================
+// == Buscar OS CLIENTES ======================================
+
+ipcMain.on('search-clients', async (event) =>{
+    try{
+        const clients = await clientModel.find().sort({nomeCliente: 1})
+        //console.log(clients)
+        event.reply('list-clients', JSON.stringify(clients))
+    }catch(error){
+        console.log(error)
+    }
+})
+
+// == Fim - Buscar OS CLIENTES=================================
+// ============================================================
+
+
+
+
+
+
+
 

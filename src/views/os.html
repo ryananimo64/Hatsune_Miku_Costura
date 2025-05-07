@@ -28,17 +28,25 @@
                 <label class="form-label">Data</label>
                 <input type="text" class="form-control" id="inputDataClient" disabled>
             </div>
-
-            <!-- Buscar cliente -->
-            <div class="col-md-5">
+             <!-- Id -->
+             <div class="col-md-4" id="inputIdClient">
+                <label for="inputIdClient" class="form-label">Id do cliente</label>
+                <input type="text" class="form-control" id="inputIdClient" spellcheck="false" maxlength="15" disabled>
+            </div>
+              <!-- Buscar cliente -->
+              <div class="col-md-5">
                 <label for="inputSearchClient" class="form-label">Buscar Cliente</label>
                 <div class="input-group">
-                    <input type="text" class="form-control" id="inputSearchClient" spellcheck="false" required maxlength="30">
+                    <input type="text" class="form-control" id="inputSearchClient" spellcheck="false"  maxlength="30">
                     <span class="input-group-text">
                         <img src="../public/img/search.png" alt="lupa" width="20">
                     </span>
                 </div>
-            </div>
+                 <!-- Listar  de sugestão - estilo Google-->
+                 <ul id="viewListSuggestion" class="list-group position-absolute w-100"></ul>
+              </div>
+               
+
 
             <!-- Nome -->
             <div class="col-md-5">
@@ -129,9 +137,9 @@
     
             <div class="d-flex justify-content-center gap-1">
                 <button type="submit" class="btn btn-success">Gerar OS</button>
-                <button type="submit" class="btn btn-primary">Buscar OS</button>
-                <button type="button" class="btn btn-warning">Editar OS</button>
-                <button type="button" class="btn btn-danger">Excluir OS</button>
+                <button type="button" class="btn btn-primary" onclick="inputOS()">Buscar OS</button>
+                <button type="button" class="btn btn-warning" id="btnUpdate">Editar OS</button>
+                <button type="button" class="btn btn-danger" id="btnDelete">Excluir OS</button>
                 <button type="button" class="btn btn-secondary">Imprimir OS</button>
         </form>
     </div>

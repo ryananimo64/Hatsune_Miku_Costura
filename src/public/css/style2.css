@@ -44,3 +44,12 @@ label {
 #idClient{
     display: none;
 }
+
+#inputIdClient{
+    display: none;
+}
+
+#viewListSuggestion{
+    z-index: 2;
+    max-width: 380px;
+}
