@@ -396,46 +396,55 @@ ipcMain.on('validate-search', () => {
 
 
 ipcMain.on('search-name', async (event, name) => {
-    console.log("teste IPC search-name")
-
-    //Passo 3 e 4: Busca dos dados do cliente no banco
-
-    //find({nomeCliente: name}) - busca pelo nome
-    //RegExp(name, i) - i (insensitive / Ignorar maiúsculo ou minúsculo)
-    try {
-        const dataClient  = await clientModel.find({
-            $or: [
-              { nomeClient: new RegExp(name, 'i') },
-              { cpfCliente: new RegExp(name, 'i') }
-            ]
-          })
-        console.log(dataClient)//Teste do pásso 3 e 4
-          
-        if (dataClient.length === 0) {
-            dialog.showMessageBox({
-                type: 'warning',
-                title: "Aviso",
-                message: "Cliente não cadastrado, deseja cadastrar?",
-                defaultId: 0,
-                buttons: ['Sim', 'Não']
-            }).then((result => {
-                if (result.response === 0) {
-                    //enviar ao renderizador um pedido para setar os campos(recotar dos campos e colar no campos)
-                    event.reply('set-client')
-                } else {
-                    event.reply('reset-form')
-                }
-            }))
-        }
-        //Passo 5: 
-        //Enviando os dados do cliente ao rendererCliente
-        //OBS: ipc só trabalha com string, então é necessario converter o JSON para JSON.stringify(dataClient)
-        event.reply('render-client', JSON.stringify(dataClient))
-    } catch (error) {
-        console.log(error)
+    console.log('Iniciando busca por:', name);
+  
+    if (!name) {
+      dialog.showMessageBox({
+        type: 'warning',
+        title: 'Atenção!',
+        message: 'Por favor, forneça um nome ou CPF para a busca.',
+        buttons: ['OK'],
+      });
+      return;
     }
-})
-
+  
+    try {
+      const dataClient = await clientModel.find({
+        $or: [
+          { nomeCliente: new RegExp(name, 'i') },
+          { cpfCliente: new RegExp(name, 'i') },
+        ],
+      });
+  
+      console.log('Dados encontrados:', dataClient);
+  
+      if (dataClient.length === 0) {
+        dialog.showMessageBox({
+          type: 'warning',
+          title: 'Aviso',
+          message: 'Cliente não cadastrado, deseja cadastrar?',
+          defaultId: 0,
+          buttons: ['Sim', 'Não'],
+        }).then((result) => {
+          if (result.response === 0) {
+            event.reply('set-client');
+          } else {
+            event.reply('reset-form');
+          }
+        });
+      } else {
+        event.reply('render-client', JSON.stringify(dataClient));
+      }
+    } catch (error) {
+      console.error('Erro ao buscar dados do cliente:', error);
+      dialog.showMessageBox({
+        type: 'error',
+        title: 'Erro',
+        message: 'Ocorreu um erro ao buscar os dados do cliente.',
+        buttons: ['OK'],
+      });
+    }
+  });
 
 // ====== Fim CRUD READ ==============================
 // ===================================================
