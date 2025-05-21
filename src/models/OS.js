@@ -9,6 +9,7 @@ const { type } = require('os')
 
 // criação da estrutura da coleção clientes
 const OSchema = new Schema({
+    dataHoraOS: {type:Date,default:Date.now},
     statusOS: {type:String},
     tecidoOS: {type:String},
     problemaOS: {type:String},

@@ -49,22 +49,22 @@
                 <input type="text" class="form-control" id="inputNameClient" spellcheck="false" maxlength="35" disabled>
             </div>
              <!-- Id -->
-             <div class="col-md-3" id="inputIdClient">
+             <div class="col-md-4">
                 <label for="inputIdClient" class="form-label">Id do cliente</label>
                 <input type="text" class="form-control" id="inputIdClient" spellcheck="false" maxlength="15" disabled>
             </div>
             <!-- Telefone -->
-            <div class="col-md-3">
+            <div class="col-md-4">
                 <label for="inputPhoneClient" class="form-label">Telefone</label>
                 <input type="text" class="form-control" id="inputPhoneClient" spellcheck="false" maxlength="15"
                     disabled>
             </div>
 
-            <!-- CPF -->
+            <!-- CPF 
             <div class="col-md-2">
                 <label for="inputCPFClient" class="form-label">CPF</label>
                 <input type="text" class="form-control" id="inputCPFClient" spellcheck="false" maxlength="15" disabled>
-            </div>
+            </div>-->
 
             <!-- Linha -->
             <hr class="mt-4 border border-secondary border -1">
@@ -140,6 +140,7 @@
                 <button type="button" class="btn btn-warning" id="btnUpdate">Editar OS</button>
                 <button type="button" class="btn btn-danger" id="btnDelete">Excluir OS</button>
                 <button type="button" class="btn btn-secondary">Imprimir OS</button>
+                <button type="reset" class="btn" id="btnReset" onclick="resetForm()"></button>
         </form>
     </div>
 

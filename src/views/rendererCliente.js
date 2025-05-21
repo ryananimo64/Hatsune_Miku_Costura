@@ -241,17 +241,30 @@ function buscarCliente() {
 }
 
 //setar o cliente não cadastrado(recortar do campo de busca e colar no campo nome)
+// setar o cliente não cadastrado (recortar do campo de busca e colar no campo nome)
 api.setClient((args) => {
-    //criar uma variavel para armazenar o valor digitado no campo de busca
-    let campoBusca = document.getElementById('searchClient').value
-    // foco no campo de nome do cliente
-    nameClient.focus()
-    //remover o valor digitado no campo de busca
-    foco.value = ""
-    //preencher o campo do nome do cliente com o nome da busca
-    nameClient.value = campoBusca
+    let campoBusca = document.getElementById('searchClient').value.trim()
 
+// Verifica se é CPF (somente números ou com máscara)
+if (/^\d{11}$/.test(campoBusca) || /^\d{3}\.\d{3}\.\d{3}-\d{2}$/.test(campoBusca)) {
+    foco.value = "";
+    cpfClient.focus();
+    cpfClient.value = campoBusca;
+}
+// Verifica se é CNPJ (somente números ou com máscara)
+else if (/^\d{14}$/.test(campoBusca) || /^\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}$/.test(campoBusca)) {
+    foco.value = "";
+    cpfClient.focus();
+    cpfClient.value = campoBusca;
+}
+// Senão, assume como nome
+else {
+    foco.value = "";
+    nameClient.focus();
+    nameClient.value = campoBusca;
+}
 })
+
 
 //==========FIM DO CRUD READ=============================
 //=======================================================

@@ -16,6 +16,7 @@ let heightOS = document.getElementById('inputHightOS')
 let widthOS = document.getElementById('inputWidthOS')
 let acessoriOS = document.getElementById('inputAcessoriOs')
 let priceOS = document.getElementById('inputPriceOs')
+let dateOS = document.getElementById('inputDataClient')
 
 
 
@@ -91,7 +92,7 @@ input.addEventListener('input', () =>{
 
 
         item.addEventListener('click', () =>{
-            idClient.value = c._id 
+            idClient.value = c._id
             nameClient.value = c.nomeCliente
             phoneClient.value = c.foneCliente
 
@@ -118,9 +119,55 @@ document.addEventListener('click', (event) =>{
 //==============================================================
 //===========FIM DO CRUD OS BUSCAR==============================
 
-function inputOS(){
+function inputOS() {
     api.searchOS()
 }
 
+api.renderOS((event, dataOS) => {
+    console.log(dataOS)
+    const os = JSON.parse(dataOS)
+    // preencher os campos com os dados da OS
+    idOS.value = os._id
+    // formatar data:
+    const data = new Date(os.dataEntrada)
+    const formatada = data.toLocaleString("pt-BR", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit"
+    })
+    dateOS.value = formatada
+    idClient.value = os.idCliente
+    statusOS.value = os.statusOS
+    computer.value = os.computador
+    serial.value = os.serie
+    problem.value = os.problema
+    obs.value = os.observacao
+    specialist.value = os.tecnico
+    diagnosis.value = os.diagnostico
+    parts.value = os.pecas
+    total.value = os.valor
+})
+
+
+
 //==========FIM DO CRUD OS BUSCAR================================
 //===============================================================
+
+// ============================================================
+// == Reset form ==============================================
+
+function resetForm() {
+    // Limpar os campos e resetar o formulário com as configurações pré definidas
+    location.reload()
+}
+
+// Recebimento do pedido do main para resetar o form
+api.resetForm((args) => {
+    resetForm()
+})
+
+// == Fim - reset form ========================================
+// ============================================================
