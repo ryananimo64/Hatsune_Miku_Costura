@@ -284,6 +284,7 @@ ipcMain.on('new-os', async (event, OS) => {
     try {
         //cria uma nova estrutura de dados usando classe  modelo
         const newOs = new OSModel({
+            idCliente: OS.orderIdClie,
             statusOS: OS.orderStatus,
             tecidoOS: OS.orderType,
             problemaOS: OS.orderProblem,
@@ -598,6 +599,66 @@ ipcMain.on('search-clients', async (event) =>{
 })
 
 // == Fim - Buscar OS CLIENTES=================================
+// ============================================================
+
+// == IMPRIMIR OS =============================================
+// ============================================================
+ipcMain.on('print-os', async (event) => {
+    prompt({
+        title: 'Imprimir OS',
+        label: 'Digite o número da OS:',
+        inputAttrs: {
+            type: 'text'
+        },
+        type: 'input',
+        width: 400,
+        height: 200
+    }).then(async (result) => {
+        // buscar OS pelo id (verificar formato usando o mongoose - importar no início do main)
+        if (result !== null) {
+            // Verificar se o ID é válido (uso do mongoose - não esquecer de importar)
+            if (mongoose.Types.ObjectId.isValid(result)) {
+                try {
+                    // teste importante
+                    //console.log("Imprimir OS")
+                    const dataOS = await OSModel.findById(result)
+                    if (dataOS && dataOS !== null) {
+                        console.log(dataOS) // teste importante
+                        // extrair os dados do cliente de acordo com o idCliete da OS vinculado a OS
+                        const dataClient = await clientModel.find({
+                            _id: dataOS.idCliente
+                          });
+                      
+                          console.log(dataClient);
+                          // Impressão (documento PDF) com os dadps da Os, do cliente e termos de serviço.
+                          // Com os dados da OS e termos de serviço (uso do jspdf)
+                      
+                    } else {
+                        dialog.showMessageBox({
+                            type: 'warning',
+                            title: "Aviso!",
+                            message: "OS não encontrada",
+                            buttons: ['OK']
+                        })
+                    }
+                } catch (error) {
+                    console.log(error)
+                }
+            } else {
+                dialog.showMessageBox({
+                    type: 'error',
+                    title: "Atenção!",
+                    message: "Formato do número da OS inválido.\nVerifique e tente novamente.",
+                    buttons: ['OK']
+                })
+            }
+        }
+    })
+})
+
+
+
+// == Fim - IMPRIMIR OS ========================================
 // ============================================================
 
 

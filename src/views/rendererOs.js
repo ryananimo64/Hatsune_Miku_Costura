@@ -33,6 +33,7 @@ frmOs.addEventListener('submit', async (event) => {
     console.log(osStatus.value,typeOs.value,problemOS.value,serviceOS.value)
 
     const OS = {
+        orderIdClie: idClient.value, 
         orderStatus: osStatus.value,
         orderType: typeOs.value,
         orderProblem: problemOS.value,
@@ -140,15 +141,15 @@ api.renderOS((event, dataOS) => {
     })
     dateOS.value = formatada
     idClient.value = os.idCliente
-    statusOS.value = os.statusOS
-    computer.value = os.computador
-    serial.value = os.serie
-    problem.value = os.problema
-    obs.value = os.observacao
-    specialist.value = os.tecnico
-    diagnosis.value = os.diagnostico
-    parts.value = os.pecas
-    total.value = os.valor
+    statusOS.value = os.orderStatus
+    tecidoOS.value = os.orderType
+    problemaOS.value = os.orderProblem
+    costureiraOS.value = os.orderService
+    tamanhoOS.value = os.orderSize
+    alturaOS.value = os.orderHight
+    larguraOS.value = os.orderWidth
+    acessoriOS.value = os.orderacessori
+    precoOS.value = os.orderPrice
 })
 
 
@@ -170,4 +171,15 @@ api.resetForm((args) => {
 })
 
 // == Fim - reset form ========================================
+// ============================================================
+
+
+// == IMPRIMIR OS =============================================
+// ============================================================
+function gerateOS(){
+    api.printOS()
+}
+
+
+// == Fim - IMPRIMIR OS ========================================
 // ============================================================
