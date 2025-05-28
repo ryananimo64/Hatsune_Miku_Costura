@@ -11,6 +11,8 @@ const { type } = require('os')
 const OSchema = new Schema({
     idCliente: {type:String},
     dataHoraOS: {type:Date,default:Date.now},
+    NameCliente: {type:String},
+    PhoneCliente: {type:String},
     statusOS: {type:String},
     tecidoOS: {type:String},
     problemaOS: {type:String},
@@ -20,8 +22,6 @@ const OSchema = new Schema({
     larguraOS:{type:String},
     acessorioOS: {type:String},
     precoOS: {type:String}
-
-
 },//não versiona os dados armazenado
 {versionKey:false})
 

@@ -62,8 +62,8 @@
 
             <!-- CPF 
             <div class="col-md-2">
-                <label for="inputCPFClient" class="form-label">CPF</label>
-                <input type="text" class="form-control" id="inputCPFClient" spellcheck="false" maxlength="15" disabled>
+                <label for="inputOS" class="form-label">CPF</label>
+                <input type="text" class="form-control" id="inputOS" spellcheck="false" maxlength="15" disabled>
             </div>-->
 
             <!-- Linha -->
@@ -135,10 +135,10 @@
            
     
             <div class="d-flex justify-content-center gap-1">
-                <button type="submit" class="btn btn-success">Gerar OS</button>
-                <button type="button" class="btn btn-primary" onclick="inputOS()">Buscar OS</button>
-                <button type="button" class="btn btn-warning" id="btnUpdate">Editar OS</button>
-                <button type="button" class="btn btn-danger" id="btnDelete">Excluir OS</button>
+                <button type="submit" class="btn btn-success" id="btnCreate">Gerar OS</button>
+                <button type="button" class="btn btn-primary" id="btnSearch" onclick="inputOS()">Buscar OS</button>
+                <button type="submit" class="btn btn-warning" id="btnUpdate" >Editar OS</button>
+                <button type="button" class="btn btn-danger" id="btnDelete" onclick="excluirOS()">Excluir OS</button>
                 <button type="button" class="btn btn-secondary" onclick="gerateOS()">Imprimir OS</button>
                 <button type="reset" class="btn" id="btnReset" onclick="resetForm()"></button>
         </form>

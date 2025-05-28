@@ -23,6 +23,7 @@ const prompt = require('electron-prompt')
 
 const OSModel = require('./src/models/OS.js')
 const Clientes = require('./src/models/Clientes.js')
+const { error } = require('node:console')
 
 
 // Janela principal
@@ -193,7 +194,8 @@ const template = [
                 click: () => relatorioClientes()
             },
             {
-                label: 'OS abertas'
+                label: 'OS abertas',
+                click: () => relatorioOsAbertas()
             },
             {
                 label: 'OS concluídas'
@@ -285,6 +287,8 @@ ipcMain.on('new-os', async (event, OS) => {
         //cria uma nova estrutura de dados usando classe  modelo
         const newOs = new OSModel({
             idCliente: OS.orderIdClie,
+            NameCliente: OS.orderNameCli,
+            PhoneCliente: OS.orderPhoneCli,
             statusOS: OS.orderStatus,
             tecidoOS: OS.orderType,
             problemaOS: OS.orderProblem,
@@ -297,6 +301,20 @@ ipcMain.on('new-os', async (event, OS) => {
         })
         //salvar os dados Clientes no banco de dados
         await newOs.save()
+        // Mensagem de confirmação
+        dialog.showMessageBox({
+            //customização
+            type: 'info',
+            title: "Aviso",
+            message: "OS gerada com sucesso",
+            buttons: ['OK']
+        }).then((result) => {
+            //ação ao pressionar o botão (result = 0)
+            if (result.response === 0) {
+                //enviar um pedido para o renderizador limpar os campos e resetar as configurações pré definidas (rótulo 'reset-form' do preload.js
+                event.reply('reset-form')
+            }
+        })
     } catch (error) {
         console.log(error)
     }
@@ -384,6 +402,92 @@ async function relatorioClientes() {
 // ====== Fim Relatório de Clientes ==================
 // ===================================================
 
+// ==========================================================
+// ===== Relatório de Clientes ==============================
+
+async function relatorioOsAbertas() {
+
+    if(statusOS.value ="Aberta"){
+        try {
+            // Passo 1: Consultar o banco de dados e obter a listagem de clientes cadastrados por ordem alfabética
+            const CLientes = await clientModel.find().sort({ nomeCliente: 1 })
+            // teste de recebimento da listagem de clientes
+            console.log(CLientes)
+            // Passo 2:Formatação do documento pdf
+            // p - portrait | l - landscape | mm e a4 (folha)
+            const doc = new jsPDF('p', 'mm', 'a4')
+    
+            const imagePath = path.join(__dirname, 'src', 'public', 'img', 'logo2.png')
+            const imageBase64 = fs.readFileSync(imagePath, { encoding: 'base64' })
+    
+            doc.addImage(imageBase64, 'PNG', 3, 6)
+            // definir o tamanho da fonte (tamanho equivalente ao word)
+            doc.setFontSize(16)
+            // escrever um texto (título)
+            doc.text("Relatório de clientes", 14, 35)//x, y (mm)
+            // inserir a data atual no relatório
+            const dataAtual = new Date().toLocaleDateString('pt-BR')
+            doc.setFontSize(12)
+            doc.text(`Data: ${dataAtual}`, 165, 10)
+            // variável de apoio na formatação
+            let y = 45
+            doc.text("Nome", 14, y)
+            doc.text("Telefone", 80, y)
+            doc.text("E-mail", 130, y)
+            y += 5
+            // desenhar uma linha
+            doc.setLineWidth(0.5) // expessura da linha
+            doc.line(10, y, 200, y) // 10 (inicio) ---- 200 (fim)
+            // renderizar os clientes cadastrados no banco de dados
+            y += 10
+            CLientes.forEach((c) => {
+                //adicionar outra pagina se a folha inteira for prenchida
+                //a estrategia é saber o tamanho da folha
+                // Folha a4 y = 290mm
+                if (y > 280) {
+                    doc.addPage()
+                    y = 20
+                    doc.text("Nome", 14, y)
+                    doc.text("Telefone", 80, y)
+                    doc.text("E-mail", 130, y)
+                    y += 5
+                    doc.setLineWidth(0.5) // expessura da linha
+                    doc.line(10, y, 200, y) // 10 (inicio) ---- 200 (fim)
+                    y += 10
+    
+                }
+                doc.text(c.nomeCliente, 14, y),
+                    doc.text(c.foneCliente, 80, y),
+                    doc.text(c.emailCliente || "N/A", 130, y)
+                y += 10 //quebra de linha
+            })
+    
+            const paginas = doc.internal.getNumberOfPages()
+            for (let i = 1; i <= paginas; i++) {
+                doc.setPage(i)
+                doc.setFontSize(10)
+                doc.text(`Pagina ${i} de ${paginas}`, 105, 290, { align: 'center' })
+            }
+    
+            // Definir o caminho do arquivo temporário e nome do arquivo
+            const tempDir = app.getPath('temp')
+            const filePath = path.join(tempDir, 'clientes.pdf')
+            // salvar temporariamente o arquivo
+            doc.save(filePath)
+            // abrir o arquivo no aplicativo padrão de leitura de pdf do computador do usuário
+            shell.openPath(filePath)
+        } catch (error) {
+            console.log(error)
+        }
+    }else{
+        console.log(error)
+    }
+    
+}
+
+// ====== Fim Relatório de OS Abertas ==================
+// ===================================================
+
 
 // ==================================================
 // ===========CRUD READ==============================
@@ -469,6 +573,32 @@ ipcMain.on('delete-client', async (event, id) => {
             //Passo 3 - Excluir o registro do cliente
 
             const delClient = await clientModel.findByIdAndDelete(id)
+            event.reply('reset-form')
+        }
+    } catch (error) {
+        console.log(error)
+    }
+})
+//======= FIM DO CRUD DELETE =========================
+//====================================================
+
+// +==================================================
+// ====== CRUD DELETE=================================
+ipcMain.on('delete-os', async (event, idOS) => {
+    console.log(idOS) //teste do passo 2
+    try {
+        // importante - confirmar a exclusão
+        // client é o nome da variavel
+        const { response } = await dialog.showMessageBox(os, {
+            type: 'warning',
+            title: "Atenção!!!",
+            message: "Deseja excluir este cliente??\n Esta ação não poderá desfeita",
+            buttons: ['Cancelar', 'Excluir']//[0,1] 
+        })
+        if (response === 1) {
+            //Passo 3 - Excluir o registro do cliente
+
+            const delOS = await OSModel.findByIdAndDelete(idOS)
             event.reply('reset-form')
         }
     } catch (error) {
@@ -663,7 +793,50 @@ ipcMain.on('print-os', async (event) => {
 
 
 
+// +==================================================
+// ====== CRUD UPDATE=================================
+ipcMain.on('update-os', async (event, OS) => {
+    console.log(OS)
+    try {
+        //cria uma nova estrutura de dados usando classe  modelo
+        const updateOs = await OSModel.findByIdAndUpdate(
+            OS.idOS,
+            {
+                statusOS: OS.orderStatus,
+                tecidoOS: OS.orderType,
+                problemaOS: OS.orderProblem,
+                costureiraOS: OS.orderService,
+                tamanhoOS: OS.orderSize,
+                alturaOS: OS.orderHight,
+                larguraOS: OS.orderWidth,
+                acessorioOS: OS.orderacessori,
+                precoOS: OS.orderPrice
+            },
+            {
+                new:true
+            }
+    )
+    //confirmação
+   
+        dialog.showMessageBox({
+            type: 'warning',
+            title: "Aviso",
+            message: "Dados do cliente foi alterado",
+            defaultId: 0,
+            buttons: ['Ok']
+        }).then((result => {
+            if (result.response === 0) {
+                //enviar ao renderizador um pedido para setar os campos(recotar dos campos e colar no campos)
+                event.reply('reset-form')
+            } 
+        }))
+    } catch (error) {
+        console.log(error)
+    }
+})
 
+//======= FIM DO CRUD UPDATE =========================
+//====================================================
 
 
 

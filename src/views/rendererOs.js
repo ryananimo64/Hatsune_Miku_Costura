@@ -4,7 +4,7 @@ const foco = document.getElementById('inputSearchClient');
      foco.focus();
          btnUpdate.disabled = true
          btnDelete.disabled = true
- });
+});
 
 let frmOs = document.getElementById('frmOs')
 let osStatus = document.getElementById('osStatus')
@@ -17,40 +17,70 @@ let widthOS = document.getElementById('inputWidthOS')
 let acessoriOS = document.getElementById('inputAcessoriOs')
 let priceOS = document.getElementById('inputPriceOs')
 let dateOS = document.getElementById('inputDataClient')
+let idOS = document.getElementById('inputNumberOs')
 
 
 
 
-//=====================================================
-//==========CRUD CREATE/UPDATE=========================
+// ============================================================
+// == CRUD Create/Update ======================================
 
-//Evento associado ao botão submit(uso das validações em html)
+//Evento associado ao botão submit (uso das validações do html)
 frmOs.addEventListener('submit', async (event) => {
-    //evitar o comportamento padrão do submit que é enviar os dados
-    // do formulario e reiniciar o documento html
+    //evitar o comportamento padrão do submit que é enviar os dados do formulário e reiniciar o documento html
     event.preventDefault()
-
-    console.log(osStatus.value,typeOs.value,problemOS.value,serviceOS.value)
-
-    const OS = {
-        orderIdClie: idClient.value, 
-        orderStatus: osStatus.value,
-        orderType: typeOs.value,
-        orderProblem: problemOS.value,
-        orderService: serviceOS.value,
-        orderSize: sizeOS.value,
-        orderHight: heightOS.value,
-        orderWidth: widthOS.value,
-        orderacessori: acessoriOS.value,
-        orderPrice: priceOS.value
+    // validação do campo obrigatório 'idClient' (validação html não funciona via html para campos desativados)
+    if (idClient.value === "") {
+        api.validateClient()
+    } else {
+        // Teste importante (recebimento dos dados do formuláro - passo 1 do fluxo)
+        console.log(idOS.value, idClient.value, statusOS.value, computer.value, serial.value, problem.value, obs.value, specialist.value, diagnosis.value, parts.value, total.value)
+        if (idOS.value === "") {
+            //Gerar OS
+            //Criar um objeto para armazenar os dados da OS antes de enviar ao main
+            const OS = {
+                orderIdClie: idClient.value, 
+                orderNameCli: nameClient.value,
+                orderPhoneCli: phoneClient.value,
+                orderStatus: osStatus.value,
+                orderType: typeOs.value,
+                orderProblem: problemOS.value,
+                orderService: serviceOS.value,
+                orderSize: sizeOS.value,
+                orderHight: heightOS.value,
+                orderWidth: widthOS.value,
+                orderacessori: acessoriOS.value,
+                orderPrice: priceOS.value
+                }
+        
+             // Enviar ao main o objeto client- (Passo 2: Fluxo)
+             api.newOs(OS)
+        } else {
+            //Editar OS
+            //Gerar OS
+            //Criar um objeto para armazenar os dados da OS antes de enviar ao main
+            const OS = {
+                orderStatus: osStatus.value,
+                orderType: typeOs.value,
+                orderProblem: problemOS.value,
+                orderService: serviceOS.value,
+                orderSize: sizeOS.value,
+                orderHight: heightOS.value,
+                orderWidth: widthOS.value,
+                orderacessori: acessoriOS.value,
+                orderPrice: priceOS.value
+            }
+            // Enviar ao main o objeto os - (Passo 2: fluxo)
+            // uso do preload.js
+            api.updateOS(OS)
         }
-
-     // Enviar ao main o objeto client- (Passo 2: Fluxo)
-     api.newOs(OS)
+    }
 })
 
-//==========FIM DO cRUD================================
-//=====================================================
+// == Fim CRUD Create/Update ==================================
+// ============================================================
+
+
 
 
 //=====================================================
@@ -141,15 +171,23 @@ api.renderOS((event, dataOS) => {
     })
     dateOS.value = formatada
     idClient.value = os.idCliente
-    statusOS.value = os.orderStatus
-    tecidoOS.value = os.orderType
-    problemaOS.value = os.orderProblem
-    costureiraOS.value = os.orderService
-    tamanhoOS.value = os.orderSize
-    alturaOS.value = os.orderHight
-    larguraOS.value = os.orderWidth
-    acessoriOS.value = os.orderacessori
-    precoOS.value = os.orderPrice
+    nameClient.value = os.NameCliente
+    phoneClient.value = os.PhoneCliente
+    osStatus.value = os.statusOS
+    typeOs.value = os.tecidoOS
+    problemOS.value = os.problemaOS
+    serviceOS.value = os.costureiraOS
+    sizeOS.value = os.tamanhoOS
+    heightOS.value = os.alturaOS
+    widthOS.value = os.larguraOS
+    acessoriOS.value = os.acessorioOS
+    priceOS.value = os.precoOS
+
+    btnCreate.disabled = true
+    btnSearch.disabled = true
+    btnUpdate.disabled = false
+    btnDelete.disabled = false
+    inputSearchClient.disabled = true
 })
 
 
@@ -172,6 +210,16 @@ api.resetForm((args) => {
 
 // == Fim - reset form ========================================
 // ============================================================
+
+//=======================================================
+//==========CRUD DELETE OS====================================
+function excluirOS() {
+    console.log(idOS.value)// Passo 1 (receber do form o id)
+    api.deleteOS(idOS.value) // Passo 2 (enviar o id para o main)
+}
+
+//==========FIM DO CRUD DELETE OS=============================
+//=======================================================
 
 
 // == IMPRIMIR OS =============================================
