@@ -4,8 +4,10 @@
   "description": "desenvolvimento de um sistema desktop para gestão de ordem de serviço de uma assistencia técnica de computadores e notebooks.",
   "main": "main.js",
   "scripts": {
-    "start": "electron .",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "electron-forge start",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "package": "electron-forge package",
+    "make": "electron-forge make"
   },
   "repository": {
     "type": "git",
@@ -18,12 +20,14 @@
   },
   "homepage": "https://github.com/ryananimo64/Hatsune_Miku_Costura#readme",
   "devDependencies": {
-    "electron": "^34.2.0"
+    "@electron-forge/publisher-github": "^7.8.1",
+    "electron-prebuilt-compile": "34.2.0"
   },
   "dependencies": {
     "electron-prompt": "^1.7.0",
     "fs": "^0.0.1-security",
-    "jspdf": "^3.0.1",
+    "jspdf": "^2.5.1",
+    "jspdf-autotable": "^3.5.25",
     "mongoose": "^8.12.2"
   }
 }

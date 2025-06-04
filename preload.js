@@ -1,17 +1,6 @@
-//arquivo de pre-recarregamento e reforço de segurança na
-//comunicação entr processos (IPC)
-
-
-//IMportação dos recursos do framework electron
-//ContextBridge (segurança) ipcrenderer(comunicação)
 const { contextBridge, ipcRenderer } = require('electron')
 const Renderer = require('electron/renderer')
-
-
-// Enviar ao main um pedido para conexão com o banco de dados e
-//troca de icone no processo de renderização(index.html - renderer.html)
 ipcRenderer.send('db-connect')
-
 
 contextBridge.exposeInMainWorld('api', {
     clientwindow: () => ipcRenderer.send('client-window'),
@@ -25,8 +14,12 @@ contextBridge.exposeInMainWorld('api', {
     validateSearch: () => ipcRenderer.send('validate-search'),
     setClient: (args) => ipcRenderer.on('set-client', args),
     deleteClient: (id) => ipcRenderer.send('delete-client',id),
+    deleteOS: (idOS) => ipcRenderer.send('delete-os',idOS),
     updateClient: (client) => ipcRenderer.send('update-client',client),
+    updateOS: (OS) => ipcRenderer.send('update-os',OS),
     searchOS: () => ipcRenderer.send('search-os'),
     searchClients: (clients) => ipcRenderer.send('search-clients',clients),
-    listClients: (clients) => ipcRenderer.on('list-clients', clients)
+    listClients: (clients) => ipcRenderer.on('list-clients', clients),
+    renderOS: (dataOS) => ipcRenderer.on('render-os',dataOS),
+    printOS: () => ipcRenderer.send('print-os')
 })
